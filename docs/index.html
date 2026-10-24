@@ -143,7 +143,7 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 </div>
 
 <script>
-const RATE={G:"普",P:"護",PG12:"輔12",PG15:"輔15",R:"限"};
+const RATE={G:"普遍級",P:"保護級",PG12:"輔12級",PG15:"輔15級",R:"限制級"};
 const WD="日一二三四五六";
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -215,7 +215,7 @@ function renderMovie(){
  $("#top").innerHTML=`<div class="bar"><button class="back" data-home>‹ 片單</button></div>${dateBar()}`;
  const has=[],none=[],off=[],nodata=[];
  for(const t of THEATERS){const s=tStatus(t.id,date);if(s==="off"){off.push(t);continue}if(s==="nodata"){nodata.push(t);continue}const rows=rowsFor(t.id,date).filter(r=>r[0]===key);rows.length?has.push([t,rows]):none.push(t)}
- const meta=[m.en,m.rating?RATE[m.rating]+"級":"",dur(m.runtime)].filter(Boolean).map(esc).join(" · ");
+ const meta=[m.en,m.rating?RATE[m.rating]:"",dur(m.runtime)].filter(Boolean).map(esc).join(" · ");
  let h=`<div class="hero">${poster(key)}<div class="min"><h1>${esc(m.title)}</h1><p>${meta}</p>${scoreTags(m)}</div></div>`;
  if(m.synopsis)h+=`<div class="syn" id="syn"><p>${esc(m.synopsis)}</p><button data-syn>展開全文</button></div>`;
  if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
