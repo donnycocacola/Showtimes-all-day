@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#f3f4f7">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d9531e'/%3E%3Cpath d='M30 28h40v44H30z' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M30 42h40M30 58h40' stroke='white' stroke-width='5'/%3E%3C/svg%3E">
 <title>台北場次通</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=Permanent+Marker&display=swap">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}
@@ -37,6 +37,10 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:10px;min-height:36px}
+.banner{background:#fff;color:#111;border-radius:10px;padding:14px 16px 10px;display:flex;align-items:center;justify-content:center;overflow:hidden;max-height:120px;transition:max-height .25s ease,padding .25s ease,opacity .2s ease}
+.banner span{font-family:"Permanent Marker","Marker Felt","Comic Sans MS",cursive;font-size:clamp(28px,8.5vw,46px);line-height:1;letter-spacing:.01em;transform:rotate(-3deg);white-space:nowrap}
+header.top.scrolled .banner{max-height:0;padding-block:0;opacity:0}
+@media (prefers-reduced-motion:reduce){.banner{transition:none}}
 .brand{font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.02em;display:flex;align-items:baseline;gap:8px}
 .brand small{font-weight:500;font-size:12px;color:var(--muted);letter-spacing:.04em}
 .back{display:inline-flex;align-items:center;gap:4px;font-weight:700;padding:6px 10px 6px 4px;border-radius:8px}
@@ -185,6 +189,7 @@ function tLink(t,date){return t.link?t.link.replace(/DT=[^&]*/,"DT="+encodeURICo
 
 function renderHome(){
  $("#top").innerHTML=`<div class="bar"><div class="brand">台北場次通</div></div>
+  <div class="banner" aria-label="Showtimes all day"><span>Showtimes all day</span></div>
   <div class="seg" role="group">${[["now","上映中"],["new","本週新片"],["bo","票房"],["soon","即將上映"]].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${st.tab===k}">${l}</button>`).join("")}</div>`;
  const chips=THEATERS.map(t=>`<button class="tchip" data-theater="${t.id}"><span class="dot ${t.status==="ok"?"ok":""}"></span>${esc(t.name)}</button>`).join("");
  let body=`<h2 class="sec">戲院 · ${THEATERS.length} 間</h2><div class="theaters">${chips}</div>`;
@@ -265,6 +270,7 @@ fetch("data/showtimes.json?t="+Date.now()).then(r=>r.json()).then(d=>{
  render();
 }).catch(()=>{$("#main").innerHTML=`<div class="loading">場次資料載入失敗，重新整理試試看。</div>`});
 setInterval(()=>{if(D&&st.view!=="home")render()},60000);
+addEventListener("scroll",()=>{const h=$("#top");if(h)h.classList.toggle("scrolled",scrollY>60)},{passive:true});
 </script>
 
 </body>
