@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#f4efe6">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e2463c'/%3E%3Cpath d='M30 28h40v44H30z' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M30 42h40M30 58h40' stroke='white' stroke-width='5'/%3E%3C/svg%3E">
 <title>台北場次通</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=Rubik+Dirt&family=Bangers&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=Rubik+Dirt&family=Bangers&family=Iansui&display=swap">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}
@@ -48,8 +48,9 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 2px 0 rgba(0,0,0,.15)}
 .dates{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .dates button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.2}
-.dates button b{font-size:14px}
-.dates button span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.dates button b{font-family:"Iansui","LXGW WenKai TC",var(--f-body);font-weight:400;font-size:20px;line-height:1.1;transform:rotate(-2deg)}
+.dates button span{font-family:"Rubik Dirt","Iansui",var(--f-body);font-size:15px;color:var(--muted);letter-spacing:.02em}
+.dates button span i{font-style:normal;font-family:"Iansui",var(--f-body);font-size:14px;margin-left:4px}
 .dates button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ticket)}
 .dates button[aria-pressed="true"] span{color:inherit;opacity:.75}
 h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;margin:22px 0 10px}
@@ -62,6 +63,8 @@ h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;m
 .tchip::after{content:"";position:absolute;right:13px;top:6px;bottom:6px;border-right:2px dashed rgba(28,26,23,.35)}
 .tchip .dot{box-shadow:0 0 0 2px rgba(255,255,255,.6)}
 .theaters{padding-block:2px}
+.tchip.tname{font-size:17px;font-weight:900;padding:9px 32px 9px 18px}
+.tarea{color:var(--muted);font-size:13px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--off);flex:none}
 .dot.ok{background:var(--good)}
 .wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
@@ -127,7 +130,7 @@ h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;m
 .pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .pimg.has-img::before{background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(0,0,0,.35))}
 .pimg.has-img > span:not(.rate):not(.rank):not(.pscore){display:none}
-.mrow .pscore{display:none!important}
+.mrow .pimg > .pscore,.mrow .pimg.has-img > .pscore{display:none!important}
 .scores{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .score{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 9px;font-size:12px;color:var(--muted);text-decoration:none}
 .score b{font-family:var(--f-mono);font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -322,7 +325,7 @@ let st={view:"home",tab:"now",date:0,movie:null,theater:null};
 try{const s=JSON.parse(localStorage.getItem("stx")||"{}");if(s.tab)st.tab=s.tab}catch(e){}
 function go(p){st={...st,...p};try{localStorage.setItem("stx",JSON.stringify({tab:st.tab}))}catch(e){}render();window.scrollTo(0,0)}
 
-function dateBar(){return`<div class="dates" role="group" aria-label="日期">${DATES.map((d,i)=>{const l=dLabel(d,i);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel}</b><span>${l.md}</span></button>`}).join("")}</div>`}
+function dateBar(){return`<div class="dates" role="group" aria-label="日期">${DATES.map((d,i)=>{const l=dLabel(d,i);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel}</b><span>${l.md.split(" ")[0]}<i>${l.md.split(" ")[1]||""}</i></span></button>`}).join("")}</div>`}
 function poster(key,rank,title){const m=mv(key,title);const img=m.poster?`<img src="${esc(m.poster)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.remove()">`:"";
  return`<div class="pimg${img?" has-img":""}" style="${posterBg(key)}">${img}${m.rating?`<span class="rate">${RATE[m.rating]}</span>`:""}${rank?`<span class="rank">${rank}</span>`:""}${scoreBadges(m)}<span>${esc(m.title)}</span><span class="en">${esc(m.en||"")}</span></div>`}
 function scoreBadges(m){const s=m.scores||{};const b=[];if(s.imdb)b.push(`<i><b>IMDb</b> ${esc(s.imdb)}</i>`);if(s.rt)b.push(`<i class="rt"><b>🍅</b> ${esc(s.rt)}</i>`);return b.length?`<span class="pscore">${b.join("")}</span>`:""}
@@ -383,7 +386,7 @@ function renderMovie(){
 
 function renderTheater(){
  const t=theater(st.theater),date=DATES[st.date],s=tStatus(t.id,date);
- $("#top").innerHTML=`<div class="bar"><button class="back" data-home>◀ 首頁</button><div class="brand" style="font-size:17px">${esc(t.name)}<small>${esc(t.area)}</small></div></div>${dateBar()}`;
+ $("#top").innerHTML=`<div class="bar"><button class="back" data-home>◀ 首頁</button><span class="tchip tname">${esc(t.name)}</span><small class="tarea">${esc(t.area)}</small></div>${dateBar()}`;
  let h="";
  if(s==="off")h=`<div class="list"><div class="block"><div class="warnbox">⚠ ${t.status==="todo"?"這家的爬蟲還在做，做好就會出現。":"這次抓取失敗，稍後會自動重抓。"}</div></div></div>`;
  else if(s==="nodata")h=`<div class="list"><div class="block"><div class="warnbox">⚠ 這天的場次還沒抓到，不代表沒有場次。</div></div></div>`;
