@@ -76,5 +76,25 @@ def run(only=None, max_pages=10):
         b.close()
 
 
+def raw(urls):
+    """不開瀏覽器，直接用 requests 抓原始 HTML（跟正式爬蟲一樣的方式）。"""
+    sys.path.insert(0, str(Path(__file__).parent))
+    from common import get
+    d = OUT / "raw"
+    d.mkdir(parents=True, exist_ok=True)
+    for i, u in enumerate(urls):
+        try:
+            r = get(u)
+            body = f"<!-- {u} status={r.status_code} -->\n" + r.text
+        except Exception as e:  # noqa: BLE001
+            body = f"<!-- {u} ERROR -->\n{e}"
+        (d / f"raw_{i:02d}.html").write_text(body, "utf-8")
+
+
 if __name__ == "__main__":
-    run(sys.argv[1:] or None)
+    args = sys.argv[1:]
+    urls = [a for a in args if a.startswith("http")]
+    if urls:
+        raw(urls)
+    else:
+        run(args or None)
