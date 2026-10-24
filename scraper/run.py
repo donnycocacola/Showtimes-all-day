@@ -123,10 +123,15 @@ def main():
                 it.pop(f, None)
 
     # ---- 簡介 + 分數（快取在 details.json，不用每次重抓）----
-    for k, m in movies.items():
+    # 有場次的片優先；每輪最多補抓 40 部簡介，避免第一次跑太久
+    order = sorted(movies, key=lambda k: -sum(1 for t in shows.values() for r in t.values() for x in r if x[0] == k))
+    budget = 40
+    for k in order:
+        m = movies[k]
         d = details.setdefault(k, {})
         tries = d.get("tries", 0)
-        if not d.get("synopsis") and tries < 3:
+        if not d.get("synopsis") and tries < 3 and budget > 0:
+            budget -= 1
             d["tries"] = tries + 1
             try:
                 if m.get("atmovies"):

@@ -66,6 +66,11 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 .pimg .en{font-family:var(--f-mono);font-weight:500;font-size:9px;letter-spacing:.06em;opacity:.8;margin-top:4px;text-transform:uppercase}
 .rate{position:absolute!important;top:7px;left:7px;font-family:var(--f-mono);font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.45);color:#fff}
 .rank{position:absolute!important;top:4px;right:8px;font-family:var(--f-mono);font-weight:600;font-size:30px;line-height:1;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.pscore{position:absolute!important;left:6px;bottom:6px;display:flex;flex-direction:column;gap:3px;align-items:flex-start;z-index:2}
+.pscore i{font-style:normal;font-family:var(--f-mono);font-size:10px;font-weight:600;line-height:1.3;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.55);color:#fff;white-space:nowrap}
+.pscore i b{color:#f5c518;font-weight:600}
+.pscore i.rt b{color:#ff6b4a}
+.pimg.has-img > .pscore{display:flex!important}
 .pmeta .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
 .pmeta{font-size:12px;color:var(--muted);line-height:1.35}
 .pmeta b{color:var(--ink);font-weight:700;font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -112,7 +117,8 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 .note{margin-top:28px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;max-width:62ch}
 .pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
 .pimg.has-img::before{background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(0,0,0,.35))}
-.pimg.has-img > span:not(.rate):not(.rank){display:none}
+.pimg.has-img > span:not(.rate):not(.rank):not(.pscore){display:none}
+.mrow .pscore{display:none!important}
 .scores{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .score{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 9px;font-size:12px;color:var(--muted);text-decoration:none}
 .score b{font-family:var(--f-mono);font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -165,7 +171,8 @@ function go(p){st={...st,...p};try{localStorage.setItem("stx",JSON.stringify({ta
 
 function dateBar(){return`<div class="dates" role="group" aria-label="日期">${DATES.map((d,i)=>{const l=dLabel(d,i);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel}</b><span>${l.md}</span></button>`}).join("")}</div>`}
 function poster(key,rank,title){const m=mv(key,title);const img=m.poster?`<img src="${esc(m.poster)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.remove()">`:"";
- return`<div class="pimg${img?" has-img":""}" style="${posterBg(key)}">${img}${m.rating?`<span class="rate">${RATE[m.rating]}</span>`:""}${rank?`<span class="rank">${rank}</span>`:""}<span>${esc(m.title)}</span><span class="en">${esc(m.en||"")}</span></div>`}
+ return`<div class="pimg${img?" has-img":""}" style="${posterBg(key)}">${img}${m.rating?`<span class="rate">${RATE[m.rating]}</span>`:""}${rank?`<span class="rank">${rank}</span>`:""}${scoreBadges(m)}<span>${esc(m.title)}</span><span class="en">${esc(m.en||"")}</span></div>`}
+function scoreBadges(m){const s=m.scores||{};const b=[];if(s.imdb)b.push(`<i><b>IMDb</b> ${esc(s.imdb)}</i>`);if(s.rt)b.push(`<i class="rt"><b>🍅</b> ${esc(s.rt)}</i>`);return b.length?`<span class="pscore">${b.join("")}</span>`:""}
 function wall(items,line){return`<div class="wall">${items.map((it,i)=>`<button class="poster" data-movie="${esc(it.key)}" data-title="${esc(it.title||"")}">${poster(it.key,it.rank,it.title)}<div class="pmeta"><b>${esc(mv(it.key,it.title).title)}</b>${line(it,i)}</div></button>`).join("")}</div>`}
 const showLine=it=>{const n=countShows(it.key),m=mv(it.key);return n?`${n} 場${m.runtime?" · "+dur(m.runtime):""}`:"這幾家沒排"};
 function timeChips(date,list){return`<div class="times">${list.map(x=>`<div class="time${isPast(date,x.t)?" past":""}"><b>${x.t}</b>${x.hall||x.flags.length?`<span>${esc([x.hall,...x.flags].filter(Boolean).join(" · "))}</span>`:""}</div>`).join("")}</div>`}

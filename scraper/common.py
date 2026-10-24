@@ -19,7 +19,7 @@ def get(url, retries=2, **kw):
     last = None
     for i in range(retries + 1):
         try:
-            r = _session.get(url, timeout=25, **kw)
+            r = _session.get(url, timeout=15, **kw)
             r.raise_for_status()
             if not r.encoding or r.encoding.lower() == "iso-8859-1":
                 r.encoding = r.apparent_encoding
