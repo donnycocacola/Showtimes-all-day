@@ -221,7 +221,7 @@ function renderMovie(){
  if(m.synopsis)h+=`<div class="syn" id="syn"><p>${esc(m.synopsis)}</p><button data-syn>展開全文</button></div>`;
  if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
  {const yt=m.trailer||("https://www.youtube.com/results?search_query="+encodeURIComponent(m.title+" 預告"));
-  h+=`<a class="trailer" href="${esc(yt)}" target="_blank" rel="noopener">▶ ${m.trailer?"看預告片":"在 YouTube 搜尋預告片"}</a>`}
+  h+=`<a class="trailer" href="${esc(yt)}" target="_blank" rel="noopener">▶ 預告片</a>`}
  h+=`<div class="list">`;
  if(!has.length)h+=`<div class="block"><div class="empty">這天在已接上的戲院都沒有場次。</div></div>`;
  for(const[t,rows]of has){const ln=tLink(t,date);h+=`<div class="block"><div class="bhead"><span class="dot ok"></span><h3>${esc(t.name)}</h3>${ln?`<a class="link" href="${esc(ln)}" target="_blank" rel="noopener">官網訂票 ›</a>`:""}</div>${verBlock(date,groupByVer(rows))}<div class="status">${t.status==="stale"?"⚠ 舊資料，":""}${esc(t.source||"")} · 更新於 ${fmtStamp(t.updated)}</div></div>`}
