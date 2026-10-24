@@ -37,6 +37,7 @@ THEATERS = [
     {"id": "zs", "name": "真善美", "area": "西門町", "src": "atmovies"},
 ]
 SRC_NAME = {"ambassador": "國賓官網", "atmovies": "開眼電影網"}
+DETAIL_VERSION = 2
 DETAIL_FIELDS = ("synopsis", "director", "cast", "genre", "release", "en")
 
 
@@ -129,14 +130,17 @@ def main():
     order = sorted(movies, key=lambda k: -sum(1 for t in shows.values() for r in t.values() for x in r if x[0] == k))
     budget = 40
     t0 = time.time()
+    omdb_err = None
     for k in order:
-        if time.time() - t0 > 360:  # 簡介和分數最多花 6 分鐘，剩下的下一輪再補
-            print("時間到，剩下的簡介下一輪再抓")
-            break
+        time_ok = time.time() - t0 < 360  # 抓簡介和分數最多花 6 分鐘，剩下的下一輪再補（但已有的資料照樣套用）
         m = movies[k]
         d = details.setdefault(k, {})
+        if d.get("v") != DETAIL_VERSION:  # 解析方式改過，舊的簡介重抓
+            d.pop("synopsis", None)
+            d["tries"] = 0
+            d["v"] = DETAIL_VERSION
         tries = d.get("tries", 0)
-        if not d.get("synopsis") and tries < 3 and budget > 0:
+        if time_ok and not d.get("synopsis") and tries < 3 and budget > 0:
             budget -= 1
             d["tries"] = tries + 1
             try:
@@ -148,13 +152,16 @@ def main():
                 print("detail fail", m["title"], e)
         checked = d.get("scores_checked")
         stale = not checked or (today - datetime.fromisoformat(checked).date()) > timedelta(days=3)
-        if os.environ.get("OMDB_API_KEY") and stale and (d.get("imdb_id") or m.get("en") or d.get("en")):
+        if (time_ok and not omdb_err and os.environ.get("OMDB_API_KEY") and stale
+                and (d.get("imdb_id") or m.get("en") or d.get("en"))):
             try:
                 year = (d.get("release") or "")[:4] or today.year
                 d["scores"] = extras.omdb(d.get("imdb_id"), m.get("en") or d.get("en"), year) or {}
                 d["scores_checked"] = today.isoformat()
             except Exception as e:  # noqa: BLE001
-                print("omdb fail", m["title"], e)
+                # 金鑰沒啟用、額度用完之類的錯誤，每部都會一樣，記一次就停
+                omdb_err = f"OMDb: {e}"
+                errors.append(omdb_err)
         for f in DETAIL_FIELDS:
             if d.get(f) and not (f == "en" and m.get("en")):
                 m[f] = d[f]
@@ -162,6 +169,9 @@ def main():
             m["scores"] = d["scores"]
         elif d.get("imdb_id"):
             m["scores"] = {"imdb_id": d["imdb_id"]}
+
+    if not os.environ.get("OMDB_API_KEY"):
+        errors.append("OMDb: GitHub 上沒有設定 OMDB_API_KEY")
 
     out = {
         "generated": stamp,
