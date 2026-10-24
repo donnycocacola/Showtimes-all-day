@@ -55,7 +55,13 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;margin:22px 0 10px}
 .theaters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .theaters::-webkit-scrollbar{display:none}
-.tchip{flex:none;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:500;font-size:14px;white-space:nowrap}
+/* 戲院按鈕做成票根：黃底黑字、左右各咬一個半圓缺口、中間一條虛線撕線 */
+.tchip{flex:none;display:flex;align-items:center;gap:8px;background:var(--ticket);color:var(--ink);border-radius:4px;padding:8px 30px 8px 16px;font-weight:700;font-size:14px;white-space:nowrap;position:relative;
+  -webkit-mask:radial-gradient(circle 7px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat;
+  mask:radial-gradient(circle 7px at 0 50%,#0000 97%,#000) left/51% 100% no-repeat,radial-gradient(circle 7px at 100% 50%,#0000 97%,#000) right/51% 100% no-repeat}
+.tchip::after{content:"";position:absolute;right:13px;top:6px;bottom:6px;border-right:2px dashed rgba(28,26,23,.35)}
+.tchip .dot{box-shadow:0 0 0 2px rgba(255,255,255,.6)}
+.theaters{padding-block:2px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--off);flex:none}
 .dot.ok{background:var(--good)}
 .wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
