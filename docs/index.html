@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="場次通">
+<meta name="theme-color" content="#f3f4f7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d9531e'/%3E%3Cpath d='M30 28h40v44H30z' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M30 42h40M30 58h40' stroke='white' stroke-width='5'/%3E%3C/svg%3E">
+<title>台北場次通</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<style>
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+/* Layout: 單欄手機優先。首頁是海報牆＋戲院列；點進去是電影頁或戲院頁，日期列固定在上方一鍵切換 */
+:root{
+  --bg:#f3f4f7; --surface:#ffffff; --ink:#15171f; --muted:#646a7a; --line:#dfe2ea;
+  --accent:#d9531e; --accent-ink:#ffffff; --good:#1f8a5b; --warn:#b7791f; --off:#9aa0ae;
+  --chip:#eef0f5;
+  --f-display:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1117; --surface:#181b24; --ink:#eceef4; --muted:#9298a8; --line:#2a2e3b;
+  --accent:#f0743f; --accent-ink:#14100d; --good:#4cc38a; --warn:#e2b04a; --off:#5d6373; --chip:#222633; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1117; --surface:#181b24; --ink:#eceef4; --muted:#9298a8; --line:#2a2e3b;
+  --accent:#f0743f; --accent-ink:#14100d; --good:#4cc38a; --warn:#e2b04a; --off:#5d6373; --chip:#222633; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:10px;min-height:36px}
+.brand{font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.02em;display:flex;align-items:baseline;gap:8px}
+.brand small{font-weight:500;font-size:12px;color:var(--muted);letter-spacing:.04em}
+.back{display:inline-flex;align-items:center;gap:4px;font-weight:700;padding:6px 10px 6px 4px;border-radius:8px}
+.back:hover{background:var(--chip)}
+.proto{margin-left:auto;font-size:11px;letter-spacing:.06em;color:var(--warn);border:1px solid currentColor;border-radius:999px;padding:2px 8px;white-space:nowrap}
+.seg{display:flex;gap:2px;background:var(--chip);border-radius:10px;padding:3px;width:fit-content;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.seg::-webkit-scrollbar{display:none}
+.seg button{flex:none;padding:6px 12px;border-radius:8px;font-weight:700;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.dates{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.dates button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.2}
+.dates button b{font-size:14px}
+.dates button span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.dates button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.dates button[aria-pressed="true"] span{color:inherit;opacity:.75}
+h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:22px 0 10px}
+.theaters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.theaters::-webkit-scrollbar{display:none}
+.tchip{flex:none;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:500;font-size:14px;white-space:nowrap}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--off);flex:none}
+.dot.ok{background:var(--good)}
+.wall{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:12px}
+.poster{display:flex;flex-direction:column;gap:6px;text-align:left}
+.pimg{aspect-ratio:2/3;max-width:100%;width:100%;border-radius:8px;position:relative;overflow:hidden;padding:10px 9px;display:flex;flex-direction:column;justify-content:flex-end;color:#fff;font-family:var(--f-display);font-weight:900;font-size:15px;line-height:1.2;text-wrap:balance;box-shadow:0 1px 0 rgba(0,0,0,.05)}
+.pimg::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.55));z-index:0}
+.pimg > *{position:relative;z-index:1}
+.pimg .en{font-family:var(--f-mono);font-weight:500;font-size:9px;letter-spacing:.06em;opacity:.8;margin-top:4px;text-transform:uppercase}
+.rate{position:absolute!important;top:7px;left:7px;font-family:var(--f-mono);font-size:10px;font-weight:600;padding:1px 6px;border-radius:4px;background:rgba(0,0,0,.45);color:#fff}
+.rank{position:absolute!important;top:4px;right:8px;font-family:var(--f-mono);font-weight:600;font-size:30px;line-height:1;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.pmeta .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;color:var(--ink)}
+.pmeta{font-size:12px;color:var(--muted);line-height:1.35}
+.pmeta b{color:var(--ink);font-weight:700;font-size:13px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.poster:hover .pimg{transform:translateY(-2px)}
+.pimg{transition:transform .15s ease}
+@media (prefers-reduced-motion:reduce){.pimg{transition:none}}
+.hero{display:grid;grid-template-columns:96px 1fr;gap:14px;margin-top:16px;align-items:end}
+.hero .pimg{font-size:13px}
+.hero h1{font-family:var(--f-display);font-weight:900;font-size:24px;line-height:1.2;margin:0;text-wrap:balance}
+.hero p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.hero .min{min-width:0}
+.block{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.list{display:flex;flex-direction:column;gap:10px;margin-top:14px}
+.bhead{display:flex;align-items:center;gap:8px;min-width:0}
+.bhead h3{margin:0;font-size:16px;font-weight:700;min-width:0}
+.bhead .link{margin-left:auto;font-size:12px;color:var(--accent);font-weight:700;text-decoration:none;white-space:nowrap}
+.status{font-size:11px;color:var(--muted);font-family:var(--f-mono)}
+.ver{display:flex;flex-direction:column;gap:6px}
+.vlabel{font-size:12px;color:var(--muted);font-weight:500;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.badge{font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.04em;padding:1px 6px;border-radius:4px;background:var(--accent);color:var(--accent-ink)}
+.times{display:flex;flex-wrap:wrap;gap:6px}
+.time{background:var(--chip);border-radius:8px;padding:5px 10px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.15;min-width:64px}
+.time b{font-family:var(--f-mono);font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.time span{font-size:10px;color:var(--muted)}
+.time.past{opacity:.38}
+.time.past b{text-decoration:line-through}
+.empty{font-size:13px;color:var(--muted)}
+.warnbox{display:flex;gap:8px;align-items:flex-start;font-size:13px;color:var(--warn)}
+.muted-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;color:var(--muted)}
+.muted-row .tag{border:1px dashed var(--line);border-radius:999px;padding:2px 9px}
+.mrow{display:grid;grid-template-columns:52px 1fr;gap:12px;align-items:start}
+.mrow .pimg{font-size:0;padding:0;border-radius:6px}
+.mrow .min{min-width:0;display:flex;flex-direction:column;gap:8px}
+.mrow h3{margin:0;font-size:16px;font-weight:700;text-align:left}
+.mrow h3 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
+.coming{display:flex;flex-direction:column;gap:0;margin-top:6px}
+.cgroup{display:grid;grid-template-columns:62px 1fr;gap:12px;padding-block:12px;border-top:1px solid var(--line)}
+.cdate{font-family:var(--f-mono);font-weight:600;font-size:15px;line-height:1.2}
+.cdate span{display:block;font-family:var(--f-body);font-size:11px;color:var(--muted);font-weight:500}
+.cfilms{display:flex;flex-direction:column;gap:6px;min-width:0}
+.cfilms div{display:flex;gap:8px;align-items:baseline;min-width:0}
+.cfilms b{font-weight:700}
+.cfilms i{font-style:normal;font-size:12px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.note{margin-top:28px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:14px;max-width:62ch}
+.pimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.pimg.has-img::before{background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(0,0,0,.35))}
+.pimg.has-img > span:not(.rate):not(.rank){display:none}
+.scores{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.score{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:3px 9px;font-size:12px;color:var(--muted);text-decoration:none}
+.score b{font-family:var(--f-mono);font-size:15px;color:var(--ink);font-variant-numeric:tabular-nums}
+.syn{margin-top:14px;font-size:14px;line-height:1.7;color:var(--ink);max-width:62ch}
+.syn p{margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.syn.open p{display:block}
+.syn button{color:var(--accent);font-weight:700;font-size:13px;margin-top:4px}
+.credits{font-size:12px;color:var(--muted);margin-top:8px;max-width:62ch}
+.loading{padding:60px 0;text-align:center;color:var(--muted)}
+.errbar{font-size:12px;color:var(--warn);margin-top:10px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top" id="top"></header>
+  <main id="main"><div class="loading">載入場次中…</div></main>
+  <p class="note" id="foot"></p>
+</div>
+
+<script>
+const RATE={G:"普",P:"護",PG12:"輔12",PG15:"輔15",R:"限"};
+const WD="日一二三四五六";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let D=null, M={}, S={}, THEATERS=[], DATES=[];
+const ST_LABEL={todo:"尚未接上",error:"抓取失敗",stale:"舊資料"};
+
+const dLabel=(d,i)=>{const t=new Date(d+"T00:00:00+08:00");return{rel:["今天","明天","後天"][i]||"",md:`${t.getMonth()+1}/${t.getDate()} 週${WD[t.getDay()]}`}};
+const hue=k=>{let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))%360;return h};
+const posterBg=k=>{const h=hue(k);return `background:linear-gradient(160deg,hsl(${h} 45% 42%),hsl(${(h+40)%360} 55% 22%))`};
+const dur=m=>m?`${Math.floor(m/60)}時${m%60}分`:"";
+const fmtStamp=s=>s?s.slice(5,16).replace("-","/").replace("T"," "):"";
+function nowTPE(){const n=new Date(Date.now()+8*3600e3);return{date:n.toISOString().slice(0,10),min:n.getUTCHours()*60+n.getUTCMinutes()}}
+const isPast=(date,t)=>{const n=nowTPE();if(date<n.date)return true;if(date>n.date)return false;const[h,m]=t.split(":").map(Number);return h*60+m<n.min};
+const theater=id=>THEATERS.find(t=>t.id===id);
+function tStatus(tid,date){const t=theater(tid);if(!t||t.status==="todo"||t.status==="error")return"off";return S[tid]&&S[tid][date]?"ok":"nodata"}
+const rowsFor=(tid,date)=>(S[tid]&&S[tid][date])||[];
+let SHOWCOUNT={};
+function buildCounts(){SHOWCOUNT={};for(const t in S)for(const d in S[t])for(const r of S[t][d])SHOWCOUNT[r[0]]=(SHOWCOUNT[r[0]]||0)+1}
+const countShows=k=>SHOWCOUNT[k]||0;
+const verName=v=>(v||"一般").replace(/數位\s*/,"").trim()||"一般";
+function groupByVer(rows){const g=new Map();for(const r of rows){const v=verName(r[1]);if(!g.has(v))g.set(v,[]);g.get(v).push({t:r[4],hall:r[2],flags:r[5]||[]})}for(const v of g.values())v.sort((a,b)=>a.t.localeCompare(b.t));return g}
+// 片單裡的片可能不在場次裡，給一個最小的電影資料
+function mv(key,fallbackTitle){return M[key]||{title:fallbackTitle||key}}
+
+let st={view:"home",tab:"now",date:0,movie:null,theater:null};
+try{const s=JSON.parse(localStorage.getItem("stx")||"{}");if(s.tab)st.tab=s.tab}catch(e){}
+function go(p){st={...st,...p};try{localStorage.setItem("stx",JSON.stringify({tab:st.tab}))}catch(e){}render();window.scrollTo(0,0)}
+
+function dateBar(){return`<div class="dates" role="group" aria-label="日期">${DATES.map((d,i)=>{const l=dLabel(d,i);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel}</b><span>${l.md}</span></button>`}).join("")}</div>`}
+function poster(key,rank,title){const m=mv(key,title);const img=m.poster?`<img src="${esc(m.poster)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.remove()">`:"";
+ return`<div class="pimg${img?" has-img":""}" style="${posterBg(key)}">${img}${m.rating?`<span class="rate">${RATE[m.rating]}</span>`:""}${rank?`<span class="rank">${rank}</span>`:""}<span>${esc(m.title)}</span><span class="en">${esc(m.en||"")}</span></div>`}
+function wall(items,line){return`<div class="wall">${items.map((it,i)=>`<button class="poster" data-movie="${esc(it.key)}" data-title="${esc(it.title||"")}">${poster(it.key,it.rank,it.title)}<div class="pmeta"><b>${esc(mv(it.key,it.title).title)}</b>${line(it,i)}</div></button>`).join("")}</div>`}
+const showLine=it=>{const n=countShows(it.key),m=mv(it.key);return n?`${n} 場${m.runtime?" · "+dur(m.runtime):""}`:"這幾家沒排"};
+function timeChips(date,list){return`<div class="times">${list.map(x=>`<div class="time${isPast(date,x.t)?" past":""}"><b>${x.t}</b><span>${esc(x.hall)}${x.flags.length?" · "+esc(x.flags.join("/")):""}</span></div>`).join("")}</div>`}
+function verBlock(date,g){let h="";for(const[v,list]of g){const sp=v.match(/^(IMAX|ATMOS|4DX|ULTRA 4DX|SCREENX|MX4D|Dolby[^ ]*|TITAN|GOLD CLASS|LUXE)\s*(.*)$/i);h+=`<div class="ver"><div class="vlabel">${sp?`<span class="badge">${esc(sp[1])}</span>${esc(sp[2])}`:esc(v)}</div>${timeChips(date,list)}</div>`}return h}
+function tLink(t,date){return t.link?t.link.replace(/DT=[^&]*/,"DT="+encodeURIComponent(date.replace(/-/g,"/"))):null}
+
+function renderHome(){
+ $("#top").innerHTML=`<div class="bar"><div class="brand">台北場次通<small>${THEATERS.length} 家戲院</small></div></div>
+  <div class="seg" role="group">${[["now","上映中"],["new","本週新片"],["bo","票房"],["soon","即將上映"]].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${st.tab===k}">${l}</button>`).join("")}</div>`;
+ const chips=THEATERS.map(t=>`<button class="tchip" data-theater="${t.id}"><span class="dot ${t.status==="ok"?"ok":""}"></span>${esc(t.name)}</button>`).join("");
+ let body=`<h2 class="sec">戲院</h2><div class="theaters">${chips}</div>`;
+ if(st.tab==="now"){
+  const keys=Object.keys(M).filter(k=>countShows(k)>0).sort((a,b)=>countShows(b)-countShows(a));
+  body+=`<h2 class="sec">上映中 · ${keys.length} 部</h2>`+wall(keys.map(key=>({key})),showLine);
+ }else if(st.tab==="new"){
+  const l=D.new_week||[];
+  body+=`<h2 class="sec">本週新片 · ${l.length} 部</h2>`+(l.length?wall(l,showLine):`<p class="empty">這週的新片清單還沒抓到。</p>`);
+ }else if(st.tab==="bo"){
+  const bo=D.boxoffice||{},rows=bo.rows||[];
+  const fmt=n=>n>=10000?(n/10000).toFixed(2).replace(/\.?0+$/,"")+" 億":n.toLocaleString()+" 萬";
+  body+=`<h2 class="sec">票房 · ${esc(bo.period||"")} ${esc(bo.source||"")}</h2>`+(rows.length?wall(rows,(it)=>`週末 <span class="num">${it.week} 萬</span><br>累計 <span class="num">${fmt(it.total)}</span>`):`<p class="empty">票房資料還沒抓到。</p>`);
+ }else{
+  const g=new Map();for(const c of (D.coming||[]).filter(c=>c.date&&c.date>nowTPE().date).sort((a,b)=>a.date.localeCompare(b.date))){if(!g.has(c.date))g.set(c.date,[]);g.get(c.date).push(c)}
+  body+=`<h2 class="sec">即將上映 · 依上映日排列</h2><div class="coming">${[...g].map(([d,l])=>{const t=new Date(d+"T00:00:00+08:00");return`<div class="cgroup"><div class="cdate">${t.getMonth()+1}/${t.getDate()}<span>週${WD[t.getDay()]}</span></div><div class="cfilms">${l.map(c=>`<div><b>${esc(c.title)}</b></div>`).join("")}</div></div>`}).join("")||`<p class="empty">還沒抓到即將上映的片單。</p>`}</div>`;
+ }
+ $("#main").innerHTML=body;
+}
+
+function scoreTags(m){const s=m.scores||{};const out=[];
+ if(s.imdb)out.push(`<a class="score" href="https://www.imdb.com/title/${esc(s.imdb_id)}/" target="_blank" rel="noopener">IMDb <b>${esc(s.imdb)}</b></a>`);
+ if(s.rt)out.push(`<span class="score">爛番茄 <b>${esc(s.rt)}</b></span>`);
+ if(!out.length)out.push(`<span class="score">IMDb／爛番茄 尚無分數</span>`);
+ return`<div class="scores">${out.join("")}</div>`}
+
+function renderMovie(){
+ const key=st.movie,m=mv(key,st.movieTitle),date=DATES[st.date];
+ $("#top").innerHTML=`<div class="bar"><button class="back" data-home>‹ 片單</button></div>${dateBar()}`;
+ const has=[],none=[],off=[],nodata=[];
+ for(const t of THEATERS){const s=tStatus(t.id,date);if(s==="off"){off.push(t);continue}if(s==="nodata"){nodata.push(t);continue}const rows=rowsFor(t.id,date).filter(r=>r[0]===key);rows.length?has.push([t,rows]):none.push(t)}
+ const meta=[m.en,m.rating?RATE[m.rating]+"級":"",dur(m.runtime)].filter(Boolean).map(esc).join(" · ");
+ let h=`<div class="hero">${poster(key)}<div class="min"><h1>${esc(m.title)}</h1><p>${meta}</p>${scoreTags(m)}</div></div>`;
+ if(m.synopsis)h+=`<div class="syn" id="syn"><p>${esc(m.synopsis)}</p><button data-syn>展開全文</button></div>`;
+ if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
+ h+=`<div class="list">`;
+ if(!has.length)h+=`<div class="block"><div class="empty">這天在已接上的戲院都沒有場次。</div></div>`;
+ for(const[t,rows]of has){const ln=tLink(t,date);h+=`<div class="block"><div class="bhead"><span class="dot ok"></span><h3>${esc(t.name)}</h3>${ln?`<a class="link" href="${esc(ln)}" target="_blank" rel="noopener">官網訂票 ›</a>`:""}</div>${verBlock(date,groupByVer(rows))}<div class="status">${t.status==="stale"?"⚠ 舊資料，":""}更新於 ${fmtStamp(t.updated)}</div></div>`}
+ if(nodata.length)h+=`<div class="block"><div class="warnbox">⚠ ${nodata.map(t=>esc(t.name)).join("、")}：這天的場次還沒抓到，不代表沒有場次。</div></div>`;
+ if(none.length||off.length)h+=`<div class="muted-row">${none.map(t=>`<span class="tag">${esc(t.name)}・這天沒有</span>`).join("")}${off.map(t=>`<span class="tag">${esc(t.name)}・${ST_LABEL[t.status]||"尚未接上"}</span>`).join("")}</div>`;
+ $("#main").innerHTML=h+"</div>";
+}
+
+function renderTheater(){
+ const t=theater(st.theater),date=DATES[st.date],s=tStatus(t.id,date);
+ $("#top").innerHTML=`<div class="bar"><button class="back" data-home>‹ 首頁</button><div class="brand" style="font-size:17px">${esc(t.name)}<small>${esc(t.area)}</small></div></div>${dateBar()}`;
+ let h="";
+ if(s==="off")h=`<div class="list"><div class="block"><div class="warnbox">⚠ ${t.status==="todo"?"這家的爬蟲還在做，做好就會出現。":"這次抓取失敗，稍後會自動重抓。"}</div></div></div>`;
+ else if(s==="nodata")h=`<div class="list"><div class="block"><div class="warnbox">⚠ 這天的場次還沒抓到，不代表沒有場次。</div></div></div>`;
+ else{
+  const byM=new Map();for(const r of rowsFor(t.id,date)){if(!byM.has(r[0]))byM.set(r[0],[]);byM.get(r[0]).push(r)}
+  const ord=[...byM].sort((a,b)=>{const f=rs=>Math.min(...rs.map(r=>+r[4].replace(":","")));return f(a[1])-f(b[1])});
+  const ln=tLink(t,date);
+  h=`<div class="list"><div class="status">${byM.size} 部電影 · ${t.status==="stale"?"⚠ 舊資料，":""}更新於 ${fmtStamp(t.updated)}${ln?` · <a style="color:var(--accent);font-weight:700;text-decoration:none" href="${esc(ln)}" target="_blank" rel="noopener">官網 ›</a>`:""}</div>${ord.map(([k,rows])=>{const m=mv(k);return`<div class="block"><div class="mrow"><button data-movie="${esc(k)}" aria-label="${esc(m.title)}">${poster(k)}</button><div class="min"><h3>${esc(m.title)}<small>${[m.rating?RATE[m.rating]:"",dur(m.runtime)].filter(Boolean).join(" · ")}</small></h3>${verBlock(date,groupByVer(rows))}</div></div></div>`}).join("")}</div>`;
+ }
+ $("#main").innerHTML=h;
+}
+
+function render(){if(!D)return;({home:renderHome,movie:renderMovie,theater:renderTheater})[st.view]()}
+document.addEventListener("click",e=>{
+ const b=e.target.closest("button");if(!b)return;
+ if(b.dataset.tab)go({tab:b.dataset.tab});
+ else if(b.dataset.date)go({date:+b.dataset.date});
+ else if(b.dataset.movie)go({view:"movie",movie:b.dataset.movie,movieTitle:b.dataset.title});
+ else if(b.dataset.theater)go({view:"theater",theater:b.dataset.theater});
+ else if("syn"in b.dataset){const s=$("#syn");s.classList.toggle("open");b.textContent=s.classList.contains("open")?"收起":"展開全文"}
+ else if("home"in b.dataset)go({view:"home"});
+});
+
+fetch("data/showtimes.json?t="+Date.now()).then(r=>r.json()).then(d=>{
+ D=d;M=d.movies||{};S=d.shows||{};THEATERS=d.theaters||[];DATES=d.dates||[];buildCounts();
+ // 資料是前一天抓的話，日期列從今天開始
+ const today=nowTPE().date;const i=DATES.indexOf(today);if(i>0){DATES=DATES.slice(i)}
+ const bad=THEATERS.filter(t=>t.status==="error"||t.status==="stale").map(t=>t.name);
+ $("#foot").innerHTML=`資料更新於 ${fmtStamp(d.generated)}，每 2 小時自動更新。${bad.length?`<span class="errbar">⚠ ${esc(bad.join("、"))} 這次沒抓到。</span>`:""}`;
+ render();
+}).catch(()=>{$("#main").innerHTML=`<div class="loading">場次資料載入失敗，重新整理試試看。</div>`});
+setInterval(()=>{if(D&&st.view!=="home")render()},60000);
+</script>
+
+</body>
+</html>
