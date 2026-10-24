@@ -107,6 +107,9 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 .mrow h3{margin:0;font-size:16px;font-weight:700;text-align:left}
 .mrow h3 small{font-weight:400;color:var(--muted);font-size:12px;margin-left:6px}
 .coming{display:flex;flex-direction:column;gap:0;margin-top:6px}
+.cday{display:flex;flex-direction:column;gap:10px;padding-block:14px;border-top:1px solid var(--line)}
+.cday h3{margin:0;font-family:var(--f-mono);font-size:18px;font-weight:600;display:flex;align-items:baseline;gap:8px}
+.cday h3 span{font-family:var(--f-body);font-size:12px;font-weight:500;color:var(--muted)}
 .cgroup{display:grid;grid-template-columns:62px 1fr;gap:12px;padding-block:12px;border-top:1px solid var(--line)}
 .cdate{font-family:var(--f-mono);font-weight:600;font-size:15px;line-height:1.2}
 .cdate span{display:block;font-family:var(--f-body);font-size:11px;color:var(--muted);font-weight:500}
@@ -196,7 +199,7 @@ function renderHome(){
   body+=`<h2 class="sec">票房 · ${esc(bo.period||"")} ${esc(bo.source||"")}</h2>`+(rows.length?wall(rows,(it)=>`週末 <span class="num">${it.week} 萬</span><br>累計 <span class="num">${fmt(it.total)}</span>`):`<p class="empty">票房資料還沒抓到。</p>`);
  }else{
   const g=new Map();for(const c of (D.coming||[]).filter(c=>c.date&&c.date>nowTPE().date).sort((a,b)=>a.date.localeCompare(b.date))){if(!g.has(c.date))g.set(c.date,[]);g.get(c.date).push(c)}
-  body+=`<h2 class="sec">即將上映 · 依上映日排列</h2><div class="coming">${[...g].map(([d,l])=>{const t=new Date(d+"T00:00:00+08:00");return`<div class="cgroup"><div class="cdate">${t.getMonth()+1}/${t.getDate()}<span>週${WD[t.getDay()]}</span></div><div class="cfilms">${l.map(c=>`<div><button data-movie="${esc(c.key)}" data-title="${esc(c.title)}" style="text-align:left"><b>${esc(c.title)}</b></button></div>`).join("")}</div></div>`}).join("")||`<p class="empty">還沒抓到即將上映的片單。</p>`}</div>`;
+  body+=`<h2 class="sec">即將上映 · 依上映日排列</h2>`+([...g].map(([d,l])=>{const t=new Date(d+"T00:00:00+08:00");return`<div class="cday"><h3>${t.getMonth()+1}/${t.getDate()}<span>週${WD[t.getDay()]} · ${l.length} 部</span></h3>${wall(l,it=>{const m=mv(it.key,it.title);return m.runtime?dur(m.runtime):"&nbsp;"})}</div>`}).join("")||`<p class="empty">還沒抓到即將上映的片單。</p>`);
  }
  $("#main").innerHTML=body;
 }
