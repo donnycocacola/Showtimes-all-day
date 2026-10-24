@@ -11,6 +11,7 @@
 import json
 import os
 import sys
+import time
 import traceback
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -47,6 +48,7 @@ def load(p, default):
 
 
 def main():
+    t_start = time.time()
     prev = load(OUT, {})
     details = load(DETAILS, {})
     dates = next_days(3)
@@ -126,7 +128,11 @@ def main():
     # 有場次的片優先；每輪最多補抓 40 部簡介，避免第一次跑太久
     order = sorted(movies, key=lambda k: -sum(1 for t in shows.values() for r in t.values() for x in r if x[0] == k))
     budget = 40
+    t0 = time.time()
     for k in order:
+        if time.time() - t0 > 360:  # 簡介和分數最多花 6 分鐘，剩下的下一輪再補
+            print("時間到，剩下的簡介下一輪再抓")
+            break
         m = movies[k]
         d = details.setdefault(k, {})
         tries = d.get("tries", 0)
@@ -172,6 +178,7 @@ def main():
     OUT.write_text(json.dumps(out, ensure_ascii=False, separators=(",", ":")), "utf-8")
     DETAILS.write_text(json.dumps(details, ensure_ascii=False, indent=0), "utf-8")
     n = sum(len(r) for t in shows.values() for r in t.values())
+    print(f"耗時 {time.time() - t_start:.0f} 秒")
     print(f"完成：{len(movies)} 部電影、{n} 場；錯誤 {len(errors)} 個")
     for t in theaters:
         print(f"  {t['name']}: {t['status']} " + " ".join(f"{d[5:]}={len(r)}" for d, r in shows.get(t['id'], {}).items()))
