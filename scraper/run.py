@@ -155,6 +155,8 @@ def main():
                 print("detail fail", m["title"], e)
         checked = d.get("scores_checked")
         stale = not checked or (today - datetime.fromisoformat(checked).date()) > timedelta(days=3)
+        if d.get("scores") and "year" not in d["scores"]:  # 舊快取沒有年份，補查一次
+            stale = True
         if (time_ok and not omdb_err and os.environ.get("OMDB_API_KEY") and stale
                 and (d.get("imdb_id") or m.get("en") or d.get("en"))):
             try:

@@ -36,6 +36,8 @@ def omdb(imdb_id=None, en_title=None, year=None):
     if r.get("Response") != "True":
         return None
     out = {"imdb_id": r.get("imdbID")}
+    if (r.get("Year") or "")[:4].isdigit():
+        out["year"] = r["Year"][:4]  # 原產地首映年份（重映片也是原本那年）
     if r.get("imdbRating") not in (None, "N/A"):
         out["imdb"] = r["imdbRating"]
         out["imdb_votes"] = r.get("imdbVotes")

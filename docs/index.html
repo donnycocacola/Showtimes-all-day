@@ -221,7 +221,8 @@ function renderMovie(){
  $("#top").innerHTML=`<div class="bar"><button class="back" data-home>‹ 片單</button></div>${dateBar()}`;
  const has=[],none=[],off=[],nodata=[];
  for(const t of THEATERS){const s=tStatus(t.id,date);if(s==="off"){off.push(t);continue}if(s==="nodata"){nodata.push(t);continue}const rows=rowsFor(t.id,date).filter(r=>r[0]===key);rows.length?has.push([t,rows]):none.push(t)}
- const meta=[m.en,m.rating?RATE[m.rating]:"",dur(m.runtime)].filter(Boolean).map(esc).join(" · ");
+ const yr=(m.scores&&m.scores.year)||(m.release||"").slice(0,4);
+ const meta=[m.en,m.rating?RATE[m.rating]:"",dur(m.runtime),yr].filter(Boolean).map(esc).join(" · ");
  let h=`<div class="hero">${poster(key)}<div class="min"><h1>${esc(m.title)}</h1><p>${meta}</p>${scoreTags(m)}</div></div>`;
  if(m.synopsis)h+=`<div class="syn" id="syn"><p>${esc(m.synopsis)}</p><button data-syn>展開全文</button></div>`;
  if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
