@@ -129,6 +129,7 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 .syn p{margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .syn.open p{display:block}
 .syn button{color:var(--accent);font-weight:700;font-size:13px;margin-top:4px}
+.trailer{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:7px 14px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:13px;text-decoration:none}
 .credits{font-size:12px;color:var(--muted);margin-top:8px;max-width:62ch}
 .loading{padding:60px 0;text-align:center;color:var(--muted)}
 .errbar{font-size:12px;color:var(--warn);margin-top:10px}
@@ -219,6 +220,8 @@ function renderMovie(){
  let h=`<div class="hero">${poster(key)}<div class="min"><h1>${esc(m.title)}</h1><p>${meta}</p>${scoreTags(m)}</div></div>`;
  if(m.synopsis)h+=`<div class="syn" id="syn"><p>${esc(m.synopsis)}</p><button data-syn>展開全文</button></div>`;
  if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
+ {const yt=m.trailer||("https://www.youtube.com/results?search_query="+encodeURIComponent(m.title+" 預告"));
+  h+=`<a class="trailer" href="${esc(yt)}" target="_blank" rel="noopener">▶ ${m.trailer?"看預告片":"在 YouTube 搜尋預告片"}</a>`}
  h+=`<div class="list">`;
  if(!has.length)h+=`<div class="block"><div class="empty">這天在已接上的戲院都沒有場次。</div></div>`;
  for(const[t,rows]of has){const ln=tLink(t,date);h+=`<div class="block"><div class="bhead"><span class="dot ok"></span><h3>${esc(t.name)}</h3>${ln?`<a class="link" href="${esc(ln)}" target="_blank" rel="noopener">官網訂票 ›</a>`:""}</div>${verBlock(date,groupByVer(rows))}<div class="status">${t.status==="stale"?"⚠ 舊資料，":""}${esc(t.source||"")} · 更新於 ${fmtStamp(t.updated)}</div></div>`}

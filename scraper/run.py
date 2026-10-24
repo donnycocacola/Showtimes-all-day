@@ -37,8 +37,8 @@ THEATERS = [
     {"id": "zs", "name": "真善美", "area": "西門町", "src": "atmovies"},
 ]
 SRC_NAME = {"ambassador": "國賓官網", "atmovies": "開眼電影網"}
-DETAIL_VERSION = 2
-DETAIL_FIELDS = ("synopsis", "director", "cast", "genre", "release", "en")
+DETAIL_VERSION = 3
+DETAIL_FIELDS = ("synopsis", "director", "cast", "genre", "release", "en", "trailer")
 
 
 def load(p, default):
@@ -135,12 +135,15 @@ def main():
         time_ok = time.time() - t0 < 360  # 抓簡介和分數最多花 6 分鐘，剩下的下一輪再補（但已有的資料照樣套用）
         m = movies[k]
         d = details.setdefault(k, {})
-        if d.get("v") != DETAIL_VERSION:  # 解析方式改過，舊的簡介重抓
+        if d.get("v", 0) < 2:  # v2 改了簡介解析，舊簡介丟掉重抓
             d.pop("synopsis", None)
+        if d.get("v") != DETAIL_VERSION:  # 解析方式改過（v3 加預告片），重抓一次
+            d["refresh"] = True
             d["tries"] = 0
             d["v"] = DETAIL_VERSION
         tries = d.get("tries", 0)
-        if time_ok and not d.get("synopsis") and tries < 3 and budget > 0:
+        if time_ok and (not d.get("synopsis") or d.get("refresh")) and tries < 3 and budget > 0:
+            d.pop("refresh", None)
             budget -= 1
             d["tries"] = tries + 1
             try:

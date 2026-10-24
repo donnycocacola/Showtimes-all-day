@@ -178,6 +178,9 @@ def movie_detail(fid):
     html = get(f"{BASE}/movie/{fid}/").text
     soup = BeautifulSoup(html, "lxml")
     out = {}
+    yt = re.search(r"youtube(?:-nocookie)?\.com/embed/([\w-]{11})", html)
+    if yt:
+        out["trailer"] = "https://www.youtube.com/watch?v=" + yt.group(1)
     im = re.search(r"imdb\.com/title/(tt\d+)", html)
     if im:
         out["imdb_id"] = im.group(1)
