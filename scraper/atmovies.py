@@ -186,6 +186,18 @@ def movie_detail(fid):
         zh, en = split_title(h.get_text(" ", strip=True))
         if en:
             out["en"] = en
+    # 簡介：「劇情簡介」所在的 div 整塊拿出來，<br> 當換行，超連結不拆行
+    node = soup.find(string=re.compile("劇情簡介"))
+    div = node.find_parent("div") if node else None
+    if div:
+        for br in div.find_all("br"):
+            br.replace_with("\n")
+        t = div.get_text("")
+        t = t.split("劇情簡介", 1)[1] if "劇情簡介" in t else t
+        t = re.sub(r"[ \t\r　]+", " ", t)
+        t = re.sub(r"\n\s*\n+", "\n\n", t).strip()
+        if len(t) > 20:
+            out["synopsis"] = t[:1200]
     for t in soup(["script", "style", "nav", "header", "footer", "select"]):
         t.decompose()
     lines = [x.strip() for x in soup.get_text("\n", strip=True).split("\n") if x.strip()]
@@ -195,7 +207,7 @@ def movie_detail(fid):
             val = m.group(2) or (lines[i + 1] if i + 1 < len(lines) else "")
             key = {"導演": "director", "演員": "cast", "上映日期": "release"}[m.group(1)]
             out.setdefault(key, val.strip())
-    if "劇情簡介" in lines:
+    if "synopsis" not in out and "劇情簡介" in lines:
         i = lines.index("劇情簡介")
         para = []
         for ln in lines[i + 1:]:
