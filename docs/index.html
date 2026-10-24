@@ -220,7 +220,7 @@ function renderMovie(){
  let h=`<div class="hero">${poster(key)}<div class="min"><h1>${esc(m.title)}</h1><p>${meta}</p>${scoreTags(m)}</div></div>`;
  if(m.synopsis)h+=`<div class="syn" id="syn"><p>${esc(m.synopsis)}</p><button data-syn>展開全文</button></div>`;
  if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
- {const yt=m.trailer||("https://www.youtube.com/results?search_query="+encodeURIComponent(m.title+" 預告"));
+ {const yt="https://www.youtube.com/results?search_query="+encodeURIComponent(m.title+" 預告");
   h+=`<a class="trailer" href="${esc(yt)}" target="_blank" rel="noopener">▶ 預告片</a>`}
  h+=`<div class="list">`;
  if(!has.length)h+=`<div class="block"><div class="empty">這天在已接上的戲院都沒有場次。</div></div>`;
