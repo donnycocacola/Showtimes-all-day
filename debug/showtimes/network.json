@@ -1,0 +1,20 @@
+[
+ {
+  "url": "https://www.showtimes.com.tw/",
+  "method": "GET",
+  "status": 403,
+  "type": "application/json",
+  "post": null,
+  "size": 22,
+  "file": "xhr_000.txt"
+ },
+ {
+  "url": "https://www.showtimes.com.tw/programs",
+  "method": "GET",
+  "status": 403,
+  "type": "application/json",
+  "post": null,
+  "size": 22,
+  "file": "xhr_001.txt"
+ }
+]

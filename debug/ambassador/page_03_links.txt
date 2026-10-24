@@ -1,0 +1,101 @@
+https://www.ambassador.com.tw/home/home	
+https://www.ambassador.com.tw/home/home	
+https://www.ambassador.com.tw/home/MovieList?Type=1	電影
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/EventList	好康
+https://www.ambassador.com.tw/home/NewsList	消息
+https://www.ambassador.com.tw/home/GroupTicket	團體
+https://www.ambassador.com.tw/home/MemberApply	加入會員
+https://www.ambassador.com.tw/home/TheaterList#!	線上訂票
+https://booking.ambassador.com.tw/	電影訂票
+https://www.ambassador.com.tw/home	首頁
+https://www.ambassador.com.tw/home/Showtime?ID=84b87b82-b936-4a39-b91f-e88328d33b4e&DT=2026/10/25	國賓大戲院
+
+台北市成都路88號
+
+02-2361-1223
+https://www.ambassador.com.tw/home/Showtime?ID=453b2966-f7c2-44a9-b2eb-687493855d0e&DT=2026/10/25	台北長春國賓影城
+
+台北市長春路176號
+
+02-2515-5757
+https://www.ambassador.com.tw/home/Showtime?ID=3301d822-b385-4aa8-a9eb-aa59d58e95c9&DT=2026/10/25	新莊晶冠國賓影城
+
+新北市新莊區五工路66號3、4樓
+
+02-8521-6517
+https://www.ambassador.com.tw/home/Showtime?ID=9383c5fa-b4f3-4ba8-ba7a-c25c7df95fd0&DT=2026/10/25	林口昕境國賓影城
+
+新北市林口區文化三路一段402巷2號4樓
+
+02-2608-
+https://www.ambassador.com.tw/home/Showtime?ID=1e42d235-c3cf-4f75-a382-af60f67a4aad&DT=2026/10/25	淡水禮萊國賓影城
+
+新北市淡水區中正路一段2號
+
+02-2626-0707
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25	八德置地國賓影城
+
+桃園市八德區介壽路一段728號3樓
+
+03-218-2898
+https://www.ambassador.com.tw/home/Showtime?ID=ec07626b-b382-474e-be39-ad45eac5cd1c&DT=2026/10/25	高雄義大國賓影城
+
+高雄市大樹區學城路一段12號3樓
+
+07-656-8368
+https://www.ambassador.com.tw/home/Showtime?ID=f760950a-94b6-4e04-9573-831ed7283c5c&DT=2026/10/25	高雄SKM Park國賓影城
+
+高雄市前鎮區中山四路100號3樓
+
+07-793
+https://www.ambassador.com.tw/home/Showtime?ID=41aae717-4464-49f4-ac26-fec2d16acbd6&DT=2026/10/25	屏東環球國賓影城
+
+屏東縣屏東市仁愛路90號6樓
+
+08-766-2128
+https://www.ambassador.com.tw/external/events/DiamondClass/index.html	寬敞舒適豪華進口FIGUERAS電動沙發座椅，一鍵輕鬆調整個人最適觀影角度，附設
+https://www.ambassador.com.tw/external/events/dbox/DBOX_MFX.html	D-BOX是加拿大最新研發出的搖動座椅，可配合電影劇情及畫面作出垂直、左右、前後
+https://www.ambassador.com.tw/external/events/atx/index.html	杜比全景聲DOLBY ATMOS全新的影院音頻技術利用頂部揚聲器和環繞揚聲器，能
+https://www.ambassador.com.tw/external/events/PrimeSeat/index.html	尊爵席座椅為進口FIGUERAS豪華式電動沙發座椅，可輕鬆調整最舒適的觀影角度，
+https://www.facebook.com/AmbassadorFans	
+https://www.instagram.com/ambassador_theatres/	
+https://www.ambassador.com.tw/home/TheaterList#!	關於國賓
+https://www.ambassador.com.tw/home/MovieList?Type=1	電影
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/EventList	好康
+https://www.ambassador.com.tw/home/NewsList	消息公告
+https://www.ambassador.com.tw/home/ContactUs	顧客意見信箱
+https://www.ambassador.com.tw/home/CreditCardNews	信用卡優惠
+https://www.ambassador.com.tw/home/NewsContent?ID=10996	個人資料蒐集、處理及利用告知事項
+https://www.ambassador.com.tw/home/TheaterList#	國賓會員
+https://www.ambassador.com.tw/home/MemberApply	加入會員
+https://www.ambassador.com.tw/home/MemberContract	會員規章
+https://booking.ambassador.com.tw/	會員資料修改
+https://booking.ambassador.com.tw/frontend/service-forgotpassword.html	會員密碼查詢
+https://booking.ambassador.com.tw/frontend/service-instruction.html	常見問題
+https://www.ambassador.com.tw/home/TheaterList#	線上訂票
+https://booking.ambassador.com.tw/	電影訂票
+https://www.ambassador.com.tw/external/events/app_new/index.html	國賓看電影ＡＰＰ
+https://www.ambassador.com.tw/home/TheaterList#	特殊影廳
+https://www.ambassador.com.tw/external/events/dbox/DBOX_MFX.html	Ｄ-BOX動感座椅
+https://www.ambassador.com.tw/external/events/atx/index.html	DOLBY ATMOS
+https://www.ambassador.com.tw/external/events/DiamondClass/index.html	金鑽貴賓廳
+https://www.ambassador.com.tw/external/events/PrimeSeat/index.html	尊爵席
+https://www.ambassador.com.tw/home/TheaterList#	團體業務
+https://www.ambassador.com.tw/home/GroupTicket	購買電影優待券及包廳
+https://www.ambassador.com.tw/home/NewsContent?ID=10995	包廳活動/團體劃位須知
+https://www.ambassador.com.tw/home/NewsContent?ID=10997	團體電影優待票券購買須知
+https://itunes.apple.com/tw/app/%E5%9C%8B%E8%B3%93%E7%9C%8B%E9%9B%BB%E5%BD%B1/id435465064?mt=8	
+https://play.google.com/store/apps/details?id=tw.com.langshin.moviefirst.droid&hl=zh_TW	
+https://www.facebook.com/AmbassadorFans	
+https://www.instagram.com/ambassador_theatres/	
+https://www.ambassador.com.tw/home	首頁
+https://www.ambassador.com.tw/home/MovieList?Type=1	電影
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/EventList	好康
+https://www.ambassador.com.tw/home/NewsList	消息
+https://www.ambassador.com.tw/home/GroupTicket	團體
+https://www.ambassador.com.tw/home/MemberApply	加入會員
+https://itunes.apple.com/tw/app/%E5%9C%8B%E8%B3%93%E7%9C%8B%E9%9B%BB%E5%BD%B1/id435465064?mt=8	
+https://play.google.com/store/apps/details?id=tw.com.langshin.moviefirst.droid&hl=zh_TW	

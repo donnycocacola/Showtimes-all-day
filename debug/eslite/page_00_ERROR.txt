@@ -1,0 +1,4 @@
+https://www.eslitecinema.com/
+Page.goto: net::ERR_NAME_NOT_RESOLVED at https://www.eslitecinema.com/
+Call log:
+  - navigating to "https://www.eslitecinema.com/", waiting until "networkidle"

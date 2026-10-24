@@ -1,0 +1,4 @@
+https://www.eslite.com/
+Page.goto: Navigation to "https://www.eslite.com/" is interrupted by another navigation to "chrome-error://chromewebdata/"
+Call log:
+  - navigating to "https://www.eslite.com/", waiting until "networkidle"

@@ -1,0 +1,160 @@
+https://www.ambassador.com.tw/home/home	
+https://www.ambassador.com.tw/home/home	
+https://www.ambassador.com.tw/home/MovieList?Type=1	電影
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/EventList	好康
+https://www.ambassador.com.tw/home/NewsList	消息
+https://www.ambassador.com.tw/home/GroupTicket	團體
+https://www.ambassador.com.tw/home/MemberApply	加入會員
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#!	線上訂票
+https://booking.ambassador.com.tw/	電影訂票
+https://www.ambassador.com.tw/home	首頁
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#!	八德廣豐國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=84b87b82-b936-4a39-b91f-e88328d33b4e&DT=2026/10/25	國賓大戲院
+https://www.ambassador.com.tw/home/Showtime?ID=453b2966-f7c2-44a9-b2eb-687493855d0e&DT=2026/10/25	台北長春國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=9383c5fa-b4f3-4ba8-ba7a-c25c7df95fd0&DT=2026/10/25	林口昕境國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=3301d822-b385-4aa8-a9eb-aa59d58e95c9&DT=2026/10/25	新莊晶冠國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=1e42d235-c3cf-4f75-a382-af60f67a4aad&DT=2026/10/25	淡水禮萊國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25	八德廣豐國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=ec07626b-b382-474e-be39-ad45eac5cd1c&DT=2026/10/25	高雄義大國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=f760950a-94b6-4e04-9573-831ed7283c5c&DT=2026/10/25	高雄草衙道國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=41aae717-4464-49f4-ac26-fec2d16acbd6&DT=2026/10/25	屏東環球國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=65db51ce-3ad5-48d8-8e32-7e872e56aa4a&DT=2026/10/25	金門昇恆昌國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#tab1	電影時刻
+https://www.ambassador.com.tw/home/theater_intro_a12	影城資訊
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25	當日, 2026/10/25
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25	當日, 2026/10/25
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/26	週一, 2026/10/26
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/27	週二, 2026/10/27
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/28	週三, 2026/10/28
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/29	週四, 2026/10/29
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/11/05	週四, 2026/11/05
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/16	週三, 2026/12/16
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/17	週四, 2026/12/17
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/18	週五, 2026/12/18
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/19	週六, 2026/12/19
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/20	週日, 2026/12/20
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/21	週一, 2026/12/21
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/12/22	週二, 2026/12/22
+https://www.ambassador.com.tw/home/MovieContent?MID=74a37a70-92f7-42c8-8809-b69f94ee3453&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=74a37a70-92f7-42c8-8809-b69f94ee3453&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=74a37a70-92f7-42c8-8809-b69f94ee3453&DT=2026/10/25	泥面人
+Clayface
+https://www.ambassador.com.tw/home/MovieContent?MID=44acf23b-8a50-433f-bf4f-a8ee363de2dc&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=44acf23b-8a50-433f-bf4f-a8ee363de2dc&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=44acf23b-8a50-433f-bf4f-a8ee363de2dc&DT=2026/10/25	快打旋風
+STREET FIGHTER
+https://www.ambassador.com.tw/home/MovieContent?MID=caca7608-f61b-42e6-a235-edf1eafcc47a&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=caca7608-f61b-42e6-a235-edf1eafcc47a&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=caca7608-f61b-42e6-a235-edf1eafcc47a&DT=2026/10/25	社群清算
+THE SOCIAL RECKONING
+https://www.ambassador.com.tw/home/MovieContent?MID=21dc7722-445a-422f-ba7d-ca63874ee2a6&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=21dc7722-445a-422f-ba7d-ca63874ee2a6&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=21dc7722-445a-422f-ba7d-ca63874ee2a6&DT=2026/10/25	活命水特弓隊
+Amazon Bullseye
+https://www.ambassador.com.tw/home/MovieContent?MID=723333bc-0afc-45db-815e-265c902456b5&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=723333bc-0afc-45db-815e-265c902456b5&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=723333bc-0afc-45db-815e-265c902456b5&DT=2026/10/25	煙囪小鎮的普佩2：約定的鐘樓
+Chimey Town: Frozen in Ti
+https://www.ambassador.com.tw/home/MovieContent?MID=21718305-fca3-4887-9ccf-f1e6d7103daf&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=21718305-fca3-4887-9ccf-f1e6d7103daf&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=21718305-fca3-4887-9ccf-f1e6d7103daf&DT=2026/10/25	加速世界 劇場版 INFINITE BURST
+Accel World: Inf
+https://www.ambassador.com.tw/home/MovieContent?MID=9b46b192-692e-49bd-bc61-ecf3012c1e0b&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=9b46b192-692e-49bd-bc61-ecf3012c1e0b&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=9b46b192-692e-49bd-bc61-ecf3012c1e0b&DT=2026/10/25	逃出鯨吞
+WHALEFALL
+https://www.ambassador.com.tw/home/MovieContent?MID=4cbdc0c6-e464-4ef1-8ea4-e3626bcbbb84&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=4cbdc0c6-e464-4ef1-8ea4-e3626bcbbb84&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=4cbdc0c6-e464-4ef1-8ea4-e3626bcbbb84&DT=2026/10/25	高年級實習生.
+THE INTERN
+https://www.ambassador.com.tw/home/MovieContent?MID=e4cd64f0-04d6-45b7-80a1-ed34c8b986c2&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=e4cd64f0-04d6-45b7-80a1-ed34c8b986c2&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=e4cd64f0-04d6-45b7-80a1-ed34c8b986c2&DT=2026/10/25	宛如星辰的你
+You, Like a Star
+https://www.ambassador.com.tw/home/MovieContent?MID=4186189c-991d-43d4-9e16-d41d3bce5d89&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=4186189c-991d-43d4-9e16-d41d3bce5d89&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=4186189c-991d-43d4-9e16-d41d3bce5d89&DT=2026/10/25	角落小夥伴電影版：從天而降的雲之冒險
+Sumikkogurashi: The C
+https://www.ambassador.com.tw/home/MovieContent?MID=2820be87-8b70-4f71-983f-7814ad7b67cd&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=2820be87-8b70-4f71-983f-7814ad7b67cd&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=2820be87-8b70-4f71-983f-7814ad7b67cd&DT=2026/10/25	另一個媽咪
+OTHER MOMMY
+https://www.ambassador.com.tw/home/MovieContent?MID=153d0557-9574-4a20-89cc-61b32bc5b487&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=153d0557-9574-4a20-89cc-61b32bc5b487&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=153d0557-9574-4a20-89cc-61b32bc5b487&DT=2026/10/25	不存在的罪人
+VERITY
+https://www.ambassador.com.tw/home/MovieContent?MID=f03cbaa5-6d58-43f7-ab06-d902b0897bec&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=f03cbaa5-6d58-43f7-ab06-d902b0897bec&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=f03cbaa5-6d58-43f7-ab06-d902b0897bec&DT=2026/10/25	挖掘者
+Digger
+https://www.ambassador.com.tw/home/MovieContent?MID=5ab185f5-ab38-4a81-80ea-81be4c3de7ff&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=5ab185f5-ab38-4a81-80ea-81be4c3de7ff&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=5ab185f5-ab38-4a81-80ea-81be4c3de7ff&DT=2026/10/25	劇場版 吉伊卡哇 人魚島的秘密
+Chiikawa The Movie
+https://www.ambassador.com.tw/home/MovieContent?MID=ff456eb3-6cc1-4a55-93ca-f740ed4289a7&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=ff456eb3-6cc1-4a55-93ca-f740ed4289a7&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=ff456eb3-6cc1-4a55-93ca-f740ed4289a7&DT=2026/10/25	野獸之心
+HEART OF THE BEAST
+https://www.ambassador.com.tw/home/MovieContent?MID=cb6d3012-c0ed-4653-b457-736feb84ec6f&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=cb6d3012-c0ed-4653-b457-736feb84ec6f&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=cb6d3012-c0ed-4653-b457-736feb84ec6f&DT=2026/10/25	惡靈古堡：爆發夜
+Resident Evil(2026)
+https://www.ambassador.com.tw/home/MovieContent?MID=eebb79e5-e525-4584-97f4-862acb7e6626&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=eebb79e5-e525-4584-97f4-862acb7e6626&DT=2026/10/25	
+https://www.ambassador.com.tw/home/MovieContent?MID=eebb79e5-e525-4584-97f4-862acb7e6626&DT=2026/10/25	蜘蛛人：重生日
+Spider-Man: Brand New Day
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#!	請選擇戲院
+https://www.ambassador.com.tw/home/Showtime?ID=84b87b82-b936-4a39-b91f-e88328d33b4e&DT=2026/10/25	國賓大戲院
+https://www.ambassador.com.tw/home/Showtime?ID=453b2966-f7c2-44a9-b2eb-687493855d0e&DT=2026/10/25	台北長春國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=9383c5fa-b4f3-4ba8-ba7a-c25c7df95fd0&DT=2026/10/25	林口昕境國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=3301d822-b385-4aa8-a9eb-aa59d58e95c9&DT=2026/10/25	新莊晶冠國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=1e42d235-c3cf-4f75-a382-af60f67a4aad&DT=2026/10/25	淡水禮萊國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25	八德廣豐國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=ec07626b-b382-474e-be39-ad45eac5cd1c&DT=2026/10/25	高雄義大國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=f760950a-94b6-4e04-9573-831ed7283c5c&DT=2026/10/25	高雄草衙道國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=41aae717-4464-49f4-ac26-fec2d16acbd6&DT=2026/10/25	屏東環球國賓影城
+https://www.ambassador.com.tw/home/Showtime?ID=65db51ce-3ad5-48d8-8e32-7e872e56aa4a&DT=2026/10/25	金門昇恆昌國賓影城
+https://www.facebook.com/AmbassadorFans	
+https://www.instagram.com/ambassador_theatres/	
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#!	關於國賓
+https://www.ambassador.com.tw/home/MovieList?Type=1	電影
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/EventList	好康
+https://www.ambassador.com.tw/home/NewsList	消息公告
+https://www.ambassador.com.tw/home/ContactUs	顧客意見信箱
+https://www.ambassador.com.tw/home/CreditCardNews	信用卡優惠
+https://www.ambassador.com.tw/home/NewsContent?ID=10996	個人資料蒐集、處理及利用告知事項
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#	國賓會員
+https://www.ambassador.com.tw/home/MemberApply	加入會員
+https://www.ambassador.com.tw/home/MemberContract	會員規章
+https://booking.ambassador.com.tw/	會員資料修改
+https://booking.ambassador.com.tw/frontend/service-forgotpassword.html	會員密碼查詢
+https://booking.ambassador.com.tw/frontend/service-instruction.html	常見問題
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#	線上訂票
+https://booking.ambassador.com.tw/	電影訂票
+https://www.ambassador.com.tw/external/events/app_new/index.html	國賓看電影ＡＰＰ
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#	特殊影廳
+https://www.ambassador.com.tw/external/events/dbox/DBOX_MFX.html	Ｄ-BOX動感座椅
+https://www.ambassador.com.tw/external/events/atx/index.html	DOLBY ATMOS
+https://www.ambassador.com.tw/external/events/DiamondClass/index.html	金鑽貴賓廳
+https://www.ambassador.com.tw/external/events/PrimeSeat/index.html	尊爵席
+https://www.ambassador.com.tw/home/Showtime?ID=8fda9934-73d4-4c14-b1c4-386c2b81045c&DT=2026/10/25#	團體業務
+https://www.ambassador.com.tw/home/GroupTicket	購買電影優待券及包廳
+https://www.ambassador.com.tw/home/NewsContent?ID=10995	包廳活動/團體劃位須知
+https://www.ambassador.com.tw/home/NewsContent?ID=10997	團體電影優待票券購買須知
+https://itunes.apple.com/tw/app/%E5%9C%8B%E8%B3%93%E7%9C%8B%E9%9B%BB%E5%BD%B1/id435465064?mt=8	
+https://play.google.com/store/apps/details?id=tw.com.langshin.moviefirst.droid&hl=zh_TW	
+https://www.facebook.com/AmbassadorFans	
+https://www.instagram.com/ambassador_theatres/	
+https://www.ambassador.com.tw/home	首頁
+https://www.ambassador.com.tw/home/MovieList?Type=1	電影
+https://www.ambassador.com.tw/home/TheaterList	影城
+https://www.ambassador.com.tw/home/EventList	好康
+https://www.ambassador.com.tw/home/NewsList	消息
+https://www.ambassador.com.tw/home/GroupTicket	團體
+https://www.ambassador.com.tw/home/MemberApply	加入會員
+https://itunes.apple.com/tw/app/%E5%9C%8B%E8%B3%93%E7%9C%8B%E9%9B%BB%E5%BD%B1/id435465064?mt=8	
+https://play.google.com/store/apps/details?id=tw.com.langshin.moviefirst.droid&hl=zh_TW	
+https://booking.ambassador.com.tw/	是

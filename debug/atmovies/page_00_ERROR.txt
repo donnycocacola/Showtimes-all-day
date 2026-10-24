@@ -1,0 +1,4 @@
+https://www.atmovies.com.tw/showtime/a02/
+Page.goto: Timeout 45000ms exceeded.
+Call log:
+  - navigating to "https://www.atmovies.com.tw/showtime/a02/", waiting until "networkidle"
