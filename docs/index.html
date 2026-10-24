@@ -184,10 +184,10 @@ function verBlock(date,g){let h="";for(const[v,list]of g){const sp=v.match(/^(UL
 function tLink(t,date){return t.link?t.link.replace(/DT=[^&]*/,"DT="+encodeURIComponent(date.replace(/-/g,"/"))):null}
 
 function renderHome(){
- $("#top").innerHTML=`<div class="bar"><div class="brand">台北場次通<small>${THEATERS.length} 家戲院</small></div></div>
+ $("#top").innerHTML=`<div class="bar"><div class="brand">台北場次通</div></div>
   <div class="seg" role="group">${[["now","上映中"],["new","本週新片"],["bo","票房"],["soon","即將上映"]].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${st.tab===k}">${l}</button>`).join("")}</div>`;
  const chips=THEATERS.map(t=>`<button class="tchip" data-theater="${t.id}"><span class="dot ${t.status==="ok"?"ok":""}"></span>${esc(t.name)}</button>`).join("");
- let body=`<h2 class="sec">戲院</h2><div class="theaters">${chips}</div>`;
+ let body=`<h2 class="sec">戲院 · ${THEATERS.length} 間</h2><div class="theaters">${chips}</div>`;
  if(st.tab==="now"){
   const keys=Object.keys(M).filter(k=>countShows(k)>0).sort((a,b)=>countShows(b)-countShows(a));
   body+=`<h2 class="sec">上映中 · ${keys.length} 部</h2>`+wall(keys.map(key=>({key})),showLine);
