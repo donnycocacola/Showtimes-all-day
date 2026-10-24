@@ -46,7 +46,7 @@ _TAGS = r"(特別場|海報場|首映場|試映場|午夜場|口碑場|搶先場
 
 def clean_title(t):
     """去掉片名裡的場次標記，保留給人看的片名。"""
-    t = unicodedata.normalize("NFKC", t or "").strip()
+    t = (t or "").replace("\u3000", " ").strip()
     t = re.sub(r"[（(]\s*" + _TAGS + r"[^）)]*[）)]", "", t)
     t = re.sub(r"[.。]+$", "", t)  # 國賓有些片名結尾多一個點
     return re.sub(r"\s+", " ", t).strip()
@@ -54,7 +54,7 @@ def clean_title(t):
 
 def movie_key(t):
     """跨戲院比對用的 key：去標記、去標點空白、轉小寫。"""
-    t = clean_title(t)
+    t = unicodedata.normalize("NFKC", clean_title(t))
     t = re.sub(r"(4K)?(數位修復版|重映版|重映|特別版|加碼重映)", "", t)
     t = re.sub(r"[\s\W_]+", "", t, flags=re.UNICODE)
     return t.lower()

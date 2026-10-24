@@ -109,10 +109,10 @@ def main():
     today = now_tpe().date()
     for k, m in movies.items():
         d = details.setdefault(k, {})
-        if "synopsis" not in d and m.get("url"):
+        if not d.get("synopsis") and m.get("url") and "ambassador" in m["url"] and d.get("detail_tries", 0) < 3:
             try:
-                d.update(ambassador.movie_detail(m["url"]))
-                d.setdefault("synopsis", "")
+                d["detail_tries"] = d.get("detail_tries", 0) + 1
+                d.update(ambassador.movie_detail(m["url"], dates[0]))
             except Exception as e:  # noqa: BLE001
                 print("detail fail", m["title"], e)
         checked = d.get("scores_checked")
@@ -124,7 +124,7 @@ def main():
                 d["scores_checked"] = today.isoformat()
             except Exception as e:  # noqa: BLE001
                 print("omdb fail", m["title"], e)
-        for f in ("synopsis", "director", "cast", "release"):
+        for f in ("synopsis", "director", "cast", "genre", "release"):
             if d.get(f):
                 m[f] = d[f]
         if d.get("scores"):

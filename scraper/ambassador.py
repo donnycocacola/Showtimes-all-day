@@ -25,75 +25,54 @@ def parse(html):
     movies: {mid: {title, en, rating, runtime, poster, url}}
     shows:  [(mid, version, hall, seats, "HH:MM", flags)]
 
-    依文件順序走過所有元素：遇到電影標題就換電影，遇到「(數位‧英文版)片名」就換版本，
-    遇到時間就記一場，後面的「2廳 97席」補上廳別。這樣不依賴特定 class 名稱，官網小改版也不容易壞。
+    官網結構：div.showtime-item > 海報 img + div.theater-box
+      h3 > a(片名 + span.eng 英文名) + p.info(分級|片長)
+      p.tag-seat「(數位‧英文版)片名」→ 下一個 ul.seat-list > li > h6 時間 + span.info「2廳 97席」(+ D-BOX 圖示)
     """
     soup = BeautifulSoup(html, "lxml")
-    movies, shows = {}, []
-    cur_mid, cur_ver, last = None, "", None
-
-    for el in soup.find_all(True):
-        name = el.name
-        if name in ("h3", "h2") and el.find("a", href=re.compile(r"MovieContent\?MID=")):
-            a = el.find("a", href=re.compile(r"MovieContent\?MID="))
-            mid = re.search(r"MID=([0-9a-f-]+)", a["href"]).group(1)
-            full = a.get_text(" ", strip=True)
-            # 標題長這樣：「泥面人Clayface」→ 中英拆開
-            m = re.match(r"^(.*?[㐀-鿿＀-￯）」』!！?？0-9]+)\s*([A-Za-z].*)?$", full)
-            zh, en = (m.group(1), m.group(2) or "") if m else (full, "")
-            block = el.parent.get_text(" ", strip=True) if el.parent else ""
-            img = None
-            for anc in (el.parent, el.parent.parent if el.parent else None):
-                if anc is None:
+    movies, shows, seen = {}, [], set()
+    for box in soup.select("div.theater-box"):
+        a = box.select_one("h3 a[href*='MovieContent']")
+        if not a:
+            continue
+        mid = re.search(r"MID=([0-9a-f-]+)", a["href"]).group(1)
+        eng = a.select_one("span.eng")
+        en = eng.get_text(" ", strip=True) if eng else ""
+        if eng:
+            eng.extract()
+        zh = a.get_text(" ", strip=True)
+        info = box.select_one("p.info")
+        info_t = info.get_text(" ", strip=True) if info else ""
+        item = box.find_parent("div", class_="showtime-item") or box
+        img = item.select_one("img[src*='/assets/img/movies/']")
+        src = img["src"] if img else None
+        if src and not src.startswith("http"):
+            src = BASE + "/" + src.lstrip("./")
+        movies[mid] = {
+            "title": clean_title(zh), "raw_title": zh, "en": en,
+            "rating": norm_rating(info_t), "runtime": parse_runtime(info_t),
+            "poster": src, "url": BASE + "/home/MovieContent?MID=" + mid,
+        }
+        for tag in box.select("p.tag-seat"):
+            vm = VER_RE.match(tag.get_text(" ", strip=True))
+            ver = vm.group(1).replace("‧", " ").replace("・", " ") if vm else ""
+            ul = tag.find_next_sibling("ul")
+            if not ul:
+                continue
+            for li in ul.select("li"):
+                h6 = li.find("h6")
+                t = h6.get_text(strip=True) if h6 else ""
+                if not TIME_RE.match(t):
                     continue
-                i = anc.find("img", src=re.compile(r"/assets/img/movies/"))
-                if i:
-                    img = i["src"]
-                    break
-            movies[mid] = {
-                "title": clean_title(zh),
-                "raw_title": zh.strip(),
-                "en": en.strip(),
-                "rating": norm_rating(block),
-                "runtime": parse_runtime(block),
-                "poster": (BASE + img.replace("..", "")) if img and img.startswith(("/", "..")) else img,
-                "url": BASE + "/home/MovieContent?MID=" + mid,
-            }
-            cur_mid, cur_ver, last = mid, "", None
-            continue
-        if cur_mid is None:
-            continue
-        own = "".join(el.find_all(string=True, recursive=False)).strip()
-        if not own:
-            continue
-        vm = VER_RE.match(own)
-        if vm and name not in ("h6", "h5"):
-            cur_ver = vm.group(1).replace("‧", " ").replace("・", " ")
-            last = None
-            continue
-        if TIME_RE.match(own):
-            last = [cur_mid, cur_ver, "", None, own.zfill(5), []]
-            shows.append(last)
-            continue
-        hm = HALL_RE.search(own)
-        if hm and last is not None and not last[2]:
-            last[2], last[3] = hm.group(1), int(hm.group(2))
-            # D-BOX / 尊爵席 圖示
-            imgs = " ".join(i.get("src", "") for i in el.find_all("img"))
-            if "dbox" in imgs.lower():
-                last[5].append("D-BOX")
-            if "prime" in imgs.lower():
-                last[5].append("尊爵席")
-
-    # 同一個時間、同廳可能因 HTML 重複出現（手機/桌機兩份），去重
-    seen, out = set(), []
-    for s in shows:
-        k = (s[0], s[1], s[2], s[4])
-        if k in seen:
-            continue
-        seen.add(k)
-        out.append(tuple(s[:5]) + (s[5],))
-    return movies, out
+                hm = HALL_RE.search(li.get_text(" ", strip=True))
+                imgs = " ".join(i.get("src", "") for i in li.find_all("img")).lower()
+                flags = [f for k, f in (("dbox", "D-BOX"), ("prime", "尊爵席")) if k in imgs]
+                row = (mid, ver, hm.group(1) if hm else "", int(hm.group(2)) if hm else None, t.zfill(5), flags)
+                k = row[:5]
+                if k not in seen:
+                    seen.add(k)
+                    shows.append(row)
+    return movies, shows
 
 
 def scrape(tid, dates):
@@ -109,20 +88,32 @@ def scrape(tid, dates):
     return {"movies": all_movies, "shows": by_date}
 
 
-def movie_detail(url):
-    """電影介紹頁：簡介、導演、演員、上映日。"""
+def movie_detail(url, date):
+    """電影介紹頁：簡介、演員、類型、上映日。網址一定要帶 DT 日期，不然官網回錯誤頁。
+
+    版面：片名 → 英文名 → 「限制級(R)1時48分」→ 簡介 → 主要演員：… → 影片類型：… → 上映日期：…
+    """
+    if "DT=" not in url:
+        url += "&DT=" + date.replace("-", "%2F")
     soup = BeautifulSoup(get(url).text, "lxml")
-    text = soup.get_text("\n", strip=True)
-    out = {}
-    for label, key in (("導演", "director"), ("演員", "cast"), ("上映日期", "release")):
-        m = re.search(label + r"\s*[:：]?\s*\n?([^\n]+)", text)
+    for t in soup(["script", "style", "nav", "header", "footer"]):
+        t.decompose()
+    lines = [x for x in soup.get_text("\n", strip=True).split("\n") if x.strip()]
+    if any("處理您的要求時發生錯誤" in x for x in lines):
+        raise RuntimeError("國賓介紹頁回傳錯誤頁")
+    out, start = {}, None
+    for i, ln in enumerate(lines):
+        if start is None and re.search(r"級.*\d+\s*時\s*\d+\s*分", ln):
+            start = i + 1
+            continue
+        m = re.match(r"^(主要演員|演員|導演|影片類型|上映日期)\s*[:：]\s*(.*)$", ln)
         if m:
-            out[key] = m.group(1).strip()
-    og = soup.find("meta", property="og:description")
-    paras = sorted((p.get_text(" ", strip=True) for p in soup.find_all("p")), key=len, reverse=True)
-    syn = paras[0] if paras and len(paras[0]) > 40 else (og["content"] if og and og.get("content") else "")
-    if syn and "國賓影城、國賓大戲院" not in syn:
-        out["synopsis"] = syn
+            key = {"主要演員": "cast", "演員": "cast", "導演": "director", "影片類型": "genre", "上映日期": "release"}[m.group(1)]
+            out.setdefault(key, m.group(2).strip())
+            if start is not None and "synopsis" not in out:
+                out["synopsis"] = "\n".join(lines[start:i]).strip()
+    if out.get("release"):
+        out["release"] = out["release"].replace("/", "-")
     return out
 
 
