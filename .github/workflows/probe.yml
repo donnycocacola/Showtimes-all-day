@@ -25,7 +25,10 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r requirements.txt playwright && python -m playwright install --with-deps chromium
-      - run: python scraper/probe.py ${{ github.event.inputs.sites }}
+      - name: 執行
+        env:
+          SITES: ${{ github.event.inputs.sites }}
+        run: python scraper/probe.py $SITES
       - name: 存回 repo
         run: |
           git config user.name "showtimes-bot"
