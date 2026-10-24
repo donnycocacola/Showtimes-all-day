@@ -5,30 +5,27 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="場次通">
-<meta name="theme-color" content="#f3f4f7">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23d9531e'/%3E%3Cpath d='M30 28h40v44H30z' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M30 42h40M30 58h40' stroke='white' stroke-width='5'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#f4efe6">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e2463c'/%3E%3Cpath d='M30 28h40v44H30z' fill='none' stroke='white' stroke-width='7'/%3E%3Cpath d='M30 42h40M30 58h40' stroke='white' stroke-width='5'/%3E%3C/svg%3E">
 <title>台北場次通</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=Permanent+Marker&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@500;600&family=Rubik+Dirt&family=Bangers&display=swap">
 <style>
 :root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 body{margin:0}
 img{max-width:100%}
 [hidden]{display:none!important}
-/* Layout: 單欄手機優先。首頁是海報牆＋戲院列；點進去是電影頁或戲院頁，日期列固定在上方一鍵切換 */
+/* Layout: 單欄手機優先。首頁是 banner＋海報牆＋戲院列；點進去是電影頁或戲院頁，日期列固定在上方一鍵切換 */
+/* 配色參考剪貼海報：米白紙底、番茄紅、墨黑、票根黃。刻意只做這一套，不跟系統深色模式切換 */
 :root{
-  --bg:#f3f4f7; --surface:#ffffff; --ink:#15171f; --muted:#646a7a; --line:#dfe2ea;
-  --accent:#d9531e; --accent-ink:#ffffff; --good:#1f8a5b; --warn:#b7791f; --off:#9aa0ae;
-  --chip:#eef0f5;
+  --bg:#f4efe6; --surface:#fbf8f2; --ink:#1c1a17; --muted:#756d62; --line:#e2d9cb;
+  --accent:#e2463c; --accent-ink:#ffffff; --good:#2f8f5b; --warn:#b5631b; --off:#b8ae9f;
+  --chip:#ece4d6; --ticket:#f4c94a;
   --f-display:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
   --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --f-fun:"Bangers","Noto Sans TC",sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0f1117; --surface:#181b24; --ink:#eceef4; --muted:#9298a8; --line:#2a2e3b;
-  --accent:#f0743f; --accent-ink:#14100d; --good:#4cc38a; --warn:#e2b04a; --off:#5d6373; --chip:#222633; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0f1117; --surface:#181b24; --ink:#eceef4; --muted:#9298a8; --line:#2a2e3b;
-  --accent:#f0743f; --accent-ink:#14100d; --good:#4cc38a; --warn:#e2b04a; --off:#5d6373; --chip:#222633; color-scheme:dark}
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
@@ -37,9 +34,9 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:10px;min-height:36px}
-.banner{background:#fff;color:#111;border-radius:10px;padding:14px 16px 10px;display:flex;align-items:center;justify-content:center;overflow:hidden;max-height:120px;transition:max-height .25s ease,padding .25s ease,opacity .2s ease}
-.banner span{font-family:"Permanent Marker","Marker Felt","Comic Sans MS",cursive;font-size:clamp(28px,8.5vw,46px);line-height:1;letter-spacing:.01em;transform:rotate(-3deg);white-space:nowrap}
-header.top.scrolled .banner{max-height:0;padding-block:0;opacity:0}
+.banner{border-radius:12px;overflow:hidden;max-height:200px;box-shadow:0 1px 0 var(--line),0 6px 18px rgba(60,40,20,.10);transition:max-height .25s ease,opacity .2s ease,margin .25s ease}
+.banner svg{display:block;width:100%;height:auto}
+header.top.scrolled .banner{max-height:0;opacity:0;margin-top:-12px;box-shadow:none}
 @media (prefers-reduced-motion:reduce){.banner{transition:none}}
 .brand{font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.02em;display:flex;align-items:baseline;gap:8px}
 .brand small{font-weight:500;font-size:12px;color:var(--muted);letter-spacing:.04em}
@@ -49,14 +46,14 @@ header.top.scrolled .banner{max-height:0;padding-block:0;opacity:0}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;background:var(--chip);border-radius:10px;padding:3px;width:100%}
 .seg::-webkit-scrollbar{display:none}
 .seg button{min-width:0;white-space:nowrap;padding:7px 4px;border-radius:8px;font-weight:700;font-size:14px;color:var(--muted)}
-.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 2px 0 rgba(0,0,0,.15)}
 .dates{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .dates button{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.2}
 .dates button b{font-size:14px}
 .dates button span{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
-.dates button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.dates button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--ticket)}
 .dates button[aria-pressed="true"] span{color:inherit;opacity:.75}
-h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;margin:22px 0 10px}
+h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;margin:22px 0 10px}
 .theaters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
 .theaters::-webkit-scrollbar{display:none}
 .tchip{flex:none;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-weight:500;font-size:14px;white-space:nowrap}
@@ -94,7 +91,7 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 .status{font-size:11px;color:var(--muted);font-family:var(--f-mono)}
 .ver{display:flex;flex-direction:column;gap:6px}
 .vlabel{font-size:12px;color:var(--muted);font-weight:500;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.badge{font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.04em;padding:1px 6px;border-radius:4px;background:var(--accent);color:var(--accent-ink)}
+.badge{font-family:var(--f-mono);font-size:10px;font-weight:600;letter-spacing:.04em;padding:1px 6px;border-radius:4px;background:var(--ticket);color:var(--ink)}
 .times{display:flex;flex-wrap:wrap;gap:6px}
 .time{background:var(--chip);border-radius:8px;padding:5px 10px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.15;min-width:64px}
 .time b{font-family:var(--f-mono);font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
@@ -148,6 +145,149 @@ h2.sec{font-size:12px;letter-spacing:.12em;color:var(--muted);font-weight:700;ma
 </div>
 
 <script>
+const NS="http://www.w3.org/2000/svg";
+const PAPER="#f7f3ec",RED="#e2463c",INK="#1a1a1a";
+function el(tag,attrs={},parent){const e=document.createElementNS(NS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+// 固定亂數，讓每次打開長一樣
+function rng(seed){let s=seed;return()=>{s=(s*16807)%2147483647;return(s-1)/2147483646}}
+
+function defs(svg,id){
+  const d=el("defs",{},svg);
+  // 紙張顆粒
+  const g=el("filter",{id:id+"grain",x:"0",y:"0",width:"100%",height:"100%"},d);
+  el("feTurbulence",{type:"fractalNoise",baseFrequency:"0.9",numOctaves:"2",seed:"3",result:"n"},g);
+  el("feColorMatrix",{in:"n",type:"matrix",values:"0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .09 0"},g);
+  // 紅字的粗糙邊 + 斑駁
+  const r=el("filter",{id:id+"rough",x:"-5%",y:"-5%",width:"110%",height:"110%"},d);
+  el("feTurbulence",{type:"fractalNoise",baseFrequency:"0.04",numOctaves:"2",seed:"7",result:"t"},r);
+  el("feDisplacementMap",{in:"SourceGraphic",in2:"t",scale:"5",result:"dsp"},r);
+  el("feTurbulence",{type:"fractalNoise",baseFrequency:"1.4",numOctaves:"1",seed:"9",result:"spk"},r);
+  el("feColorMatrix",{in:"spk",type:"matrix",values:"0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -1.4 1.75",result:"spkA"},r);
+  el("feComposite",{in:"dsp",in2:"spkA",operator:"in"},r);
+  // 剪紙陰影
+  const sh=el("filter",{id:id+"shadow",x:"-20%",y:"-20%",width:"140%",height:"150%"},d);
+  el("feDropShadow",{dx:"3",dy:"6",stdDeviation:"5","flood-color":"#000","flood-opacity":".28"},sh);
+  return d;
+}
+function ground(svg,id){el("rect",{width:1200,height:420,fill:PAPER},svg);}
+function grainTop(svg,id){el("rect",{width:1200,height:420,filter:`url(#${id}grain)`,fill:"#fff","pointer-events":"none"},svg)}
+
+// 一個字一個字擺，各自轉角度、上下錯開、大小不一，像手剪的
+function jaggedWord(parent,word,{x,y,size,font,fill,seed,spacing=0.94,maxRot=6,jitterY=16,scaleVar=.14,width}){
+  const r=rng(seed),g=el("g",{},parent);
+  const probe=el("text",{"font-family":font,"font-size":size,visibility:"hidden"},parent);
+  const ws=[...word].map(ch=>{probe.textContent=ch;return ch===" "?size*.32:probe.getComputedTextLength()});
+  probe.remove();
+  let total=ws.reduce((a,b)=>a+b*spacing,0);
+  const k=width?width/total:1; let cx=x-(width?width/2:total/2);
+  [...word].forEach((ch,i)=>{
+    const w=ws[i]*spacing*k;
+    if(ch!==" "){
+      const sx=1+(r()-.5)*scaleVar, sy=1+(r()-.3)*scaleVar*1.6, rot=(r()-.5)*2*maxRot, dy=(r()-.5)*jitterY;
+      const t=el("text",{"font-family":font,"font-size":size*k,fill,"text-anchor":"middle",
+        transform:`translate(${cx+w/2} ${y+dy}) rotate(${rot}) scale(${sx} ${sy})`},g);
+      t.textContent=ch;
+    }
+    cx+=w;
+  });
+  return g;
+}
+
+// 剪紙片：不規則多邊形 + 白紙邊 + 陰影，內容裁在裡面
+let clipN=0;
+function cutout(parent,id,pts,draw,{edge=7,rot=0,cx=0,cy=0}={}){
+  const g=el("g",{transform:`rotate(${rot} ${cx} ${cy})`,filter:`url(#${id}shadow)`},parent);
+  const p=pts.map(q=>q.join(",")).join(" ");
+  el("polygon",{points:p,fill:"#fff",stroke:"#fff","stroke-width":edge*2,"stroke-linejoin":"round"},g);
+  const cid=id+"clip"+(clipN++);
+  const cp=el("clipPath",{id:cid},g); el("polygon",{points:p},cp);
+  const inner=el("g",{"clip-path":`url(#${cid})`},g);
+  draw(inner);
+  return g;
+}
+function eyePiece(parent,id,cx,cy,rot,look){
+  const pts=[[cx-92,cy-30],[cx-38,cy-62],[cx+44,cy-58],[cx+96,cy-14],[cx+80,cy+44],[cx-20,cy+60],[cx-86,cy+34]];
+  cutout(parent,id,pts,g=>{
+    el("rect",{x:cx-120,y:cy-90,width:240,height:180,fill:"#e9b48f"},g);
+    el("path",{d:`M${cx-110} ${cy-40} Q${cx} ${cy-70} ${cx+110} ${cy-46} L${cx+110} ${cy-90} L${cx-110} ${cy-90}Z`,fill:"#d79a74"},g);
+    el("path",{d:`M${cx-70} ${cy+4} Q${cx} ${cy-44} ${cx+72} ${cy+2} Q${cx} ${cy+40} ${cx-70} ${cy+4}Z`,fill:"#fbf7f2"},g);
+    el("circle",{cx:cx+look,cy:cy,r:24,fill:"#4a2c1d"},g);
+    el("circle",{cx:cx+look,cy:cy,r:12,fill:"#111"},g);
+    el("circle",{cx:cx+look+8,cy:cy-8,r:5,fill:"#fff"},g);
+    el("path",{d:`M${cx-74} ${cy+4} Q${cx} ${cy-50} ${cx+76} ${cy+2}`,fill:"none",stroke:"#2a1a12","stroke-width":7,"stroke-linecap":"round"},g);
+    el("path",{d:`M${cx-64} ${cy+18} Q${cx} ${cy+44} ${cx+64} ${cy+16}`,fill:"none",stroke:"#b97a58","stroke-width":4},g);
+  },{rot,cx,cy});
+}
+function ticketPiece(parent,id,cx,cy,rot){
+  const w=230,h=96,x=cx-w/2,y=cy-h/2;
+  const pts=[[x,y],[x+w,y+4],[x+w-6,y+h],[x+4,y+h-3]];
+  cutout(parent,id,pts,g=>{
+    el("rect",{x:x-10,y:y-10,width:w+20,height:h+20,fill:"#f4c94a"},g);
+    el("circle",{cx:x,cy:cy,r:16,fill:"#fff"},g); el("circle",{cx:x+w,cy:cy,r:16,fill:"#fff"},g);
+    el("line",{x1:x+w-58,y1:y+8,x2:x+w-58,y2:y+h-8,stroke:INK,"stroke-width":3,"stroke-dasharray":"6 7"},g);
+    const t=el("text",{x:x+22,y:cy+6,"font-family":"Bangers",fill:INK,"font-size":40,"letter-spacing":"2"},g);t.textContent="ADMIT ONE";
+    const n=el("text",{x:x+w-30,y:cy+10,"font-family":"Bangers",fill:RED,"font-size":30,"text-anchor":"middle",transform:`rotate(-90 ${x+w-30} ${cy})`},g);n.textContent="No.7";
+  },{rot,cx,cy,edge:6});
+}
+function caption(parent,lines,y,size,fill,font="Bangers"){
+  lines.forEach((ln,i)=>{const t=el("text",{x:600,y:y+i*size*1.12,"text-anchor":"middle","font-family":font,"font-size":size,fill,"letter-spacing":"1.5"},parent);t.textContent=ln});
+}
+
+// ---- A：偷看的眼睛 ----
+function drawA(svg,id){
+  svg.innerHTML="";defs(svg,id);ground(svg,id);
+  const g=el("g",{filter:`url(#${id}rough)`},svg);
+  jaggedWord(g,"SHOWTIMES",{x:600,y:262,size:230,font:"Rubik Dirt",fill:RED,seed:11,width:1080,maxRot:5,jitterY:22,scaleVar:.2});
+  eyePiece(svg,id,470,182,-6,-18);
+  eyePiece(svg,id,742,176,5,-20);
+  ticketPiece(svg,id,612,300,-4);
+  caption(svg,["ALL DAY. EVERY DAY. PICK A SEAT, ANY SEAT."],388,30,RED);
+  grainTop(svg,id);
+}
+
+
+function cartoonEye(parent,id,cx,cy,rot,style,side){
+  const pts=[[cx-78,cy-58],[cx-20,cy-92],[cx+56,cy-82],[cx+86,cy-24],[cx+70,cy+62],[cx-6,cy+84],[cx-74,cy+50]];
+  cutout(parent,id,pts,g=>{
+    el("rect",{x:cx-110,y:cy-120,width:220,height:230,fill:"#fff4cf"},g);
+    const L={stroke:INK,"stroke-width":9,"stroke-linecap":"round","stroke-linejoin":"round"};
+    if(style==="pie"){
+      el("ellipse",{cx,cy,rx:46,ry:64,fill:"#fff",...L},g);
+      const px=cx-14, py=cy+10;
+      el("ellipse",{cx:px,cy:py,rx:20,ry:34,fill:INK},g);
+      el("path",{d:`M${px} ${py-6} L${px+30} ${py-40} L${px+4} ${py-46}Z`,fill:"#fff"},g);
+    }else if(style==="side"){
+      el("ellipse",{cx,cy:cy+6,rx:58,ry:44,fill:"#fff",...L},g);
+      const lid=`M${cx-60} ${cy-2} Q${cx} ${cy-22} ${cx+60} ${cy-2} L${cx+64} ${cy-60} L${cx-64} ${cy-60}Z`;
+      el("circle",{cx:cx-30,cy:cy+18,r:20,fill:INK},g);
+      el("circle",{cx:cx-36,cy:cy+12,r:6,fill:"#fff"},g);
+      el("path",{d:lid,fill:"#fff4cf"},g);
+      el("path",{d:`M${cx-60} ${cy-2} Q${cx} ${cy-22} ${cx+60} ${cy-2}`,fill:"none",...L},g);
+      el("ellipse",{cx,cy:cy+6,rx:58,ry:44,fill:"none",...L},g);
+      const up=side>0?-18:0;
+      el("path",{d:`M${cx-46} ${cy-48+up} Q${cx} ${cy-66+up*1.6} ${cx+46} ${cy-50}`,fill:"none",...L,"stroke-width":10},g);
+    }else{
+      el("circle",{cx,cy:cy+4,r:56,fill:"#fff",...L},g);
+      el("circle",{cx:cx-14,cy:cy+26,r:17,fill:INK},g);
+      el("circle",{cx:cx-8,cy:cy+19,r:5,fill:"#fff"},g);
+      el("path",{d:`M${cx-30} ${cy-70} Q${cx-4*side} ${cy-84} ${cx+28} ${cy-72}`,fill:"none",...L,"stroke-width":8,transform:`rotate(${-12*side} ${cx} ${cy-72})`},g);
+      el("path",{d:`M${cx-58} ${cy+4} L${cx-74} ${cy-6} M${cx+58} ${cy+4} L${cx+74} ${cy-6}`,fill:"none",...L,"stroke-width":5,opacity:.0},g);
+    }
+  },{rot,cx,cy});
+}
+function drawK(svg,id,style){
+  svg.innerHTML="";defs(svg,id);ground(svg,id);
+  const g=el("g",{filter:`url(#${id}rough)`},svg);
+  jaggedWord(g,"SHOWTIMES",{x:600,y:262,size:230,font:"Rubik Dirt",fill:RED,seed:11,width:1080,maxRot:5,jitterY:22,scaleVar:.2});
+  cartoonEye(svg,id,488,170,-6,style,1);
+  cartoonEye(svg,id,720,164,5,style,-1);
+  ticketPiece(svg,id,606,304,-4);
+  caption(svg,["ALL DAY. EVERY DAY. PICK A SEAT, ANY SEAT."],388,30,RED);
+  grainTop(svg,id);
+}
+
+
+function drawBanner(){const svg=document.getElementById("bannerSvg");if(svg)drawK(svg,"bn","side")}
 const RATE={G:"普遍級",P:"保護級",PG12:"輔12級",PG15:"輔15級",R:"限制級"};
 const WD="日一二三四五六";
 const $=s=>document.querySelector(s);
@@ -189,7 +329,7 @@ function tLink(t,date){return t.link?t.link.replace(/DT=[^&]*/,"DT="+encodeURICo
 
 function renderHome(){
  $("#top").innerHTML=`<div class="bar"><div class="brand">台北場次通</div></div>
-  <div class="banner" aria-label="Showtimes all day"><span>Showtimes all day</span></div>
+  <div class="banner" role="img" aria-label="Showtimes all day"><svg id="bannerSvg" viewBox="0 0 1200 420"></svg></div>
   <div class="seg" role="group">${[["now","上映中"],["new","本週新片"],["bo","票房"],["soon","即將上映"]].map(([k,l])=>`<button data-tab="${k}" aria-pressed="${st.tab===k}">${l}</button>`).join("")}</div>`;
  const chips=THEATERS.map(t=>`<button class="tchip" data-theater="${t.id}"><span class="dot ${t.status==="ok"?"ok":""}"></span>${esc(t.name)}</button>`).join("");
  let body=`<h2 class="sec">戲院 · ${THEATERS.length} 間</h2><div class="theaters">${chips}</div>`;
@@ -208,6 +348,7 @@ function renderHome(){
   body+=`<h2 class="sec">即將上映 · 依上映日排列</h2>`+([...g].map(([d,l])=>{const t=new Date(d+"T00:00:00+08:00");return`<div class="cday"><h3>${t.getMonth()+1}/${t.getDate()}<span>週${WD[t.getDay()]} · ${l.length} 部</span></h3>${wall(l,it=>{const m=mv(it.key,it.title);return m.runtime?dur(m.runtime):"&nbsp;"})}</div>`}).join("")||`<p class="empty">還沒抓到即將上映的片單。</p>`);
  }
  $("#main").innerHTML=body;
+ drawBanner();
 }
 
 function scoreTags(m){const s=m.scores||{};const out=[];
@@ -271,6 +412,7 @@ fetch("data/showtimes.json?t="+Date.now()).then(r=>r.json()).then(d=>{
  render();
 }).catch(()=>{$("#main").innerHTML=`<div class="loading">場次資料載入失敗，重新整理試試看。</div>`});
 setInterval(()=>{if(D&&st.view!=="home")render()},60000);
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawBanner);
 addEventListener("scroll",()=>{const h=$("#top");if(h)h.classList.toggle("scrolled",scrollY>60)},{passive:true});
 </script>
 
