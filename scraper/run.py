@@ -1,8 +1,12 @@
 """主程式：抓 7 家戲院 + 片單，輸出 docs/data/showtimes.json。
 
-原則：
-- 某家抓失敗，不會整個掛掉；保留上一次的資料並標成「舊資料」，網頁上會顯示警告。
-- 簡介、IMDb/爛番茄放在 details.json 快取，不用每次重抓。
+資料來源：
+- 西門國賓、長春國賓：國賓官網（有廳別、座位數、D-BOX）
+- 誠品、京站威秀、新店威秀、巨蛋秀泰、真善美：開眼電影網（威秀、秀泰官網會擋 GitHub 的主機）
+- 本週新片、即將上映、台北週末票房、簡介、IMDb 編號：開眼
+- IMDb / 爛番茄分數：OMDb
+
+原則：某家抓失敗不會整個掛掉，保留上一次的資料並標成「舊資料」。
 """
 import json
 import os
@@ -14,22 +18,25 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(__file__))
 
 import ambassador  # noqa: E402
+import atmovies  # noqa: E402
 import extras  # noqa: E402
-from common import TPE, clean_title, movie_key, next_days, now_tpe  # noqa: E402
+from common import movie_key, next_days, now_tpe  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "data" / "showtimes.json"
 DETAILS = ROOT / "docs" / "data" / "details.json"
 
 THEATERS = [
-    {"id": "es", "name": "誠品電影院", "area": "松菸", "chain": None},
-    {"id": "xm", "name": "西門國賓", "area": "國賓大戲院", "chain": "ambassador"},
-    {"id": "cc", "name": "長春國賓", "area": "長春廣場", "chain": "ambassador"},
-    {"id": "qz", "name": "京站威秀", "area": "台北車站", "chain": None},
-    {"id": "xd", "name": "新店威秀", "area": "裕隆城", "chain": None},
-    {"id": "dj", "name": "巨蛋秀泰", "area": "大巨蛋", "chain": None},
-    {"id": "zs", "name": "真善美", "area": "西門町", "chain": None},
+    {"id": "es", "name": "誠品電影院", "area": "松菸", "src": "atmovies"},
+    {"id": "xm", "name": "西門國賓", "area": "國賓大戲院", "src": "ambassador"},
+    {"id": "cc", "name": "長春國賓", "area": "長春廣場", "src": "ambassador"},
+    {"id": "qz", "name": "京站威秀", "area": "台北車站", "src": "atmovies"},
+    {"id": "xd", "name": "新店威秀", "area": "裕隆城", "src": "atmovies"},
+    {"id": "dj", "name": "巨蛋秀泰", "area": "大巨蛋", "src": "atmovies"},
+    {"id": "zs", "name": "真善美", "area": "西門町", "src": "atmovies"},
 ]
+SRC_NAME = {"ambassador": "國賓官網", "atmovies": "開眼電影網"}
+DETAIL_FIELDS = ("synopsis", "director", "cast", "genre", "release", "en")
 
 
 def load(p, default):
@@ -47,35 +54,40 @@ def main():
     movies, shows, theaters, errors = {}, {}, [], []
 
     def add_movie(info):
-        k = movie_key(info["title"])
+        k = movie_key(info.get("title"))
         if not k:
             return None
         m = movies.setdefault(k, {"title": info["title"]})
-        for f in ("en", "rating", "runtime", "poster", "url"):
+        # 國賓的海報比較清楚，先到先贏；開眼 id 用來抓簡介和 IMDb
+        for f in ("en", "rating", "runtime", "poster", "url", "atmovies"):
             if info.get(f) and not m.get(f):
                 m[f] = info[f]
         return k
 
     for t in THEATERS:
         rec = {k: t[k] for k in ("id", "name", "area")}
+        rec["source"] = SRC_NAME[t["src"]]
         try:
-            if t["chain"] == "ambassador":
+            if t["src"] == "ambassador":
                 data = ambassador.scrape(t["id"], dates)
-                idmap = {mid: add_movie(info) for mid, info in data["movies"].items()}
-                shows[t["id"]] = {
-                    d: [[idmap[s[0]], s[1], s[2], s[3], s[4], s[5]] for s in rows if idmap.get(s[0])]
-                    for d, rows in data["shows"].items()
-                }
                 rec["link"] = ambassador.showtime_url(t["id"], dates[0])
-                rec.update(status="ok", updated=stamp)
             else:
-                rec.update(status="todo", message="這家的爬蟲還在做")
+                data = atmovies.scrape(t["id"], dates)
+                rec["link"] = atmovies.theater_url(t["id"])
+                if data.get("source_updated"):
+                    rec["source_updated"] = data["source_updated"]
+            idmap = {mid: add_movie(info) for mid, info in data["movies"].items()}
+            shows[t["id"]] = {
+                d: [[idmap[s[0]], s[1], s[2], s[3], s[4], s[5]] for s in rows if idmap.get(s[0])]
+                for d, rows in data["shows"].items()
+            }
+            rec.update(status="ok", updated=stamp)
         except Exception as e:  # noqa: BLE001
             traceback.print_exc()
             errors.append(f"{t['name']}: {e}")
             old_t = next((x for x in prev.get("theaters", []) if x["id"] == t["id"]), None)
             old_s = prev.get("shows", {}).get(t["id"])
-            if old_t and old_s:
+            if old_t and old_s and old_t.get("updated"):
                 shows[t["id"]] = old_s
                 for k in {r[0] for rows in old_s.values() for r in rows}:
                     if k in prev.get("movies", {}) and k not in movies:
@@ -92,43 +104,53 @@ def main():
             return fn()
         except Exception as e:  # noqa: BLE001
             traceback.print_exc()
-            errors.append(f"{fn.__name__}: {e}")
+            errors.append(f"{fn.__module__}.{fn.__name__}: {e}")
             return fallback
 
-    coming = try_(ambassador.coming_soon, prev.get("coming", []))
-    for c in coming:
-        c["key"] = c.get("key") or movie_key(c["title"])
-    new_week = try_(extras.new_this_week, prev.get("new_week", []))
-    for n in new_week:
-        n["key"] = n.get("key") or movie_key(n["title"])
-    boxoffice = try_(extras.taipei_weekend_boxoffice, prev.get("boxoffice", {}))
-    for r in boxoffice.get("rows", []):
-        r["key"] = movie_key(r["title"])
-
-    # ---- 簡介 + 分數（快取）----
+    new_week = try_(atmovies.new_this_week, prev.get("new_week", []))
+    coming = try_(atmovies.coming_soon, prev.get("coming", []))
+    boxoffice = try_(atmovies.taipei_weekend_boxoffice, prev.get("boxoffice", {}))
     today = now_tpe().date()
+    coming = [c for c in coming if c.get("date") and c["date"] > today.isoformat()]
+
+    # 片單裡的電影也補進 movies，點進去才看得到簡介（即使這幾家沒排）
+    for lst in (new_week, boxoffice.get("rows", []), coming):
+        for it in lst:
+            info = {"title": it["title"], "en": it.get("en"), "poster": it.get("poster"),
+                    "runtime": it.get("runtime"), "atmovies": it.get("fid")}
+            it["key"] = add_movie(info)
+            for f in ("fid",):
+                it.pop(f, None)
+
+    # ---- 簡介 + 分數（快取在 details.json，不用每次重抓）----
     for k, m in movies.items():
         d = details.setdefault(k, {})
-        if not d.get("synopsis") and m.get("url") and "ambassador" in m["url"] and d.get("detail_tries", 0) < 3:
+        tries = d.get("tries", 0)
+        if not d.get("synopsis") and tries < 3:
+            d["tries"] = tries + 1
             try:
-                d["detail_tries"] = d.get("detail_tries", 0) + 1
-                d.update(ambassador.movie_detail(m["url"], dates[0]))
+                if m.get("atmovies"):
+                    d.update({x: y for x, y in atmovies.movie_detail(m["atmovies"]).items() if y})
+                if not d.get("synopsis") and m.get("url") and "ambassador" in m["url"]:
+                    d.update({x: y for x, y in ambassador.movie_detail(m["url"], dates[0]).items() if y})
             except Exception as e:  # noqa: BLE001
                 print("detail fail", m["title"], e)
         checked = d.get("scores_checked")
-        if os.environ.get("OMDB_API_KEY") and (not checked or (today - datetime.fromisoformat(checked).date()) > timedelta(days=3)):
+        stale = not checked or (today - datetime.fromisoformat(checked).date()) > timedelta(days=3)
+        if os.environ.get("OMDB_API_KEY") and stale and (d.get("imdb_id") or m.get("en") or d.get("en")):
             try:
                 year = (d.get("release") or "")[:4] or today.year
-                sc = extras.omdb(m.get("en"), year)
-                d["scores"] = sc or {}
+                d["scores"] = extras.omdb(d.get("imdb_id"), m.get("en") or d.get("en"), year) or {}
                 d["scores_checked"] = today.isoformat()
             except Exception as e:  # noqa: BLE001
                 print("omdb fail", m["title"], e)
-        for f in ("synopsis", "director", "cast", "genre", "release"):
-            if d.get(f):
+        for f in DETAIL_FIELDS:
+            if d.get(f) and not (f == "en" and m.get("en")):
                 m[f] = d[f]
         if d.get("scores"):
             m["scores"] = d["scores"]
+        elif d.get("imdb_id"):
+            m["scores"] = {"imdb_id": d["imdb_id"]}
 
     out = {
         "generated": stamp,
@@ -146,6 +168,8 @@ def main():
     DETAILS.write_text(json.dumps(details, ensure_ascii=False, indent=0), "utf-8")
     n = sum(len(r) for t in shows.values() for r in t.values())
     print(f"完成：{len(movies)} 部電影、{n} 場；錯誤 {len(errors)} 個")
+    for t in theaters:
+        print(f"  {t['name']}: {t['status']} " + " ".join(f"{d[5:]}={len(r)}" for d, r in shows.get(t['id'], {}).items()))
     for e in errors:
         print("  -", e)
 

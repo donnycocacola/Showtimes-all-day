@@ -168,8 +168,8 @@ function poster(key,rank,title){const m=mv(key,title);const img=m.poster?`<img s
  return`<div class="pimg${img?" has-img":""}" style="${posterBg(key)}">${img}${m.rating?`<span class="rate">${RATE[m.rating]}</span>`:""}${rank?`<span class="rank">${rank}</span>`:""}<span>${esc(m.title)}</span><span class="en">${esc(m.en||"")}</span></div>`}
 function wall(items,line){return`<div class="wall">${items.map((it,i)=>`<button class="poster" data-movie="${esc(it.key)}" data-title="${esc(it.title||"")}">${poster(it.key,it.rank,it.title)}<div class="pmeta"><b>${esc(mv(it.key,it.title).title)}</b>${line(it,i)}</div></button>`).join("")}</div>`}
 const showLine=it=>{const n=countShows(it.key),m=mv(it.key);return n?`${n} 場${m.runtime?" · "+dur(m.runtime):""}`:"這幾家沒排"};
-function timeChips(date,list){return`<div class="times">${list.map(x=>`<div class="time${isPast(date,x.t)?" past":""}"><b>${x.t}</b><span>${esc(x.hall)}${x.flags.length?" · "+esc(x.flags.join("/")):""}</span></div>`).join("")}</div>`}
-function verBlock(date,g){let h="";for(const[v,list]of g){const sp=v.match(/^(IMAX|ATMOS|4DX|ULTRA 4DX|SCREENX|MX4D|Dolby[^ ]*|TITAN|GOLD CLASS|LUXE)\s*(.*)$/i);h+=`<div class="ver"><div class="vlabel">${sp?`<span class="badge">${esc(sp[1])}</span>${esc(sp[2])}`:esc(v)}</div>${timeChips(date,list)}</div>`}return h}
+function timeChips(date,list){return`<div class="times">${list.map(x=>`<div class="time${isPast(date,x.t)?" past":""}"><b>${x.t}</b>${x.hall||x.flags.length?`<span>${esc([x.hall,...x.flags].filter(Boolean).join(" · "))}</span>`:""}</div>`).join("")}</div>`}
+function verBlock(date,g){let h="";for(const[v,list]of g){const sp=v.match(/^(ULTRA 4DX|IMAX|ATMOS|4DX|SCREENX|DVA|MX4D|Dolby[^ ]*|TITAN|GOLD CLASS|LUXE)\s*(.*)$/i);h+=`<div class="ver"><div class="vlabel">${sp?`<span class="badge">${esc(sp[1])}</span>${esc(sp[2])}`:esc(v)}</div>${timeChips(date,list)}</div>`}return h}
 function tLink(t,date){return t.link?t.link.replace(/DT=[^&]*/,"DT="+encodeURIComponent(date.replace(/-/g,"/"))):null}
 
 function renderHome(){
@@ -189,7 +189,7 @@ function renderHome(){
   body+=`<h2 class="sec">票房 · ${esc(bo.period||"")} ${esc(bo.source||"")}</h2>`+(rows.length?wall(rows,(it)=>`週末 <span class="num">${it.week} 萬</span><br>累計 <span class="num">${fmt(it.total)}</span>`):`<p class="empty">票房資料還沒抓到。</p>`);
  }else{
   const g=new Map();for(const c of (D.coming||[]).filter(c=>c.date&&c.date>nowTPE().date).sort((a,b)=>a.date.localeCompare(b.date))){if(!g.has(c.date))g.set(c.date,[]);g.get(c.date).push(c)}
-  body+=`<h2 class="sec">即將上映 · 依上映日排列</h2><div class="coming">${[...g].map(([d,l])=>{const t=new Date(d+"T00:00:00+08:00");return`<div class="cgroup"><div class="cdate">${t.getMonth()+1}/${t.getDate()}<span>週${WD[t.getDay()]}</span></div><div class="cfilms">${l.map(c=>`<div><b>${esc(c.title)}</b></div>`).join("")}</div></div>`}).join("")||`<p class="empty">還沒抓到即將上映的片單。</p>`}</div>`;
+  body+=`<h2 class="sec">即將上映 · 依上映日排列</h2><div class="coming">${[...g].map(([d,l])=>{const t=new Date(d+"T00:00:00+08:00");return`<div class="cgroup"><div class="cdate">${t.getMonth()+1}/${t.getDate()}<span>週${WD[t.getDay()]}</span></div><div class="cfilms">${l.map(c=>`<div><button data-movie="${esc(c.key)}" data-title="${esc(c.title)}" style="text-align:left"><b>${esc(c.title)}</b></button></div>`).join("")}</div></div>`}).join("")||`<p class="empty">還沒抓到即將上映的片單。</p>`}</div>`;
  }
  $("#main").innerHTML=body;
 }
@@ -211,7 +211,7 @@ function renderMovie(){
  if(m.director||m.cast)h+=`<div class="credits">${m.director?"導演："+esc(m.director):""}${m.director&&m.cast?"　":""}${m.cast?"演員："+esc(m.cast):""}</div>`;
  h+=`<div class="list">`;
  if(!has.length)h+=`<div class="block"><div class="empty">這天在已接上的戲院都沒有場次。</div></div>`;
- for(const[t,rows]of has){const ln=tLink(t,date);h+=`<div class="block"><div class="bhead"><span class="dot ok"></span><h3>${esc(t.name)}</h3>${ln?`<a class="link" href="${esc(ln)}" target="_blank" rel="noopener">官網訂票 ›</a>`:""}</div>${verBlock(date,groupByVer(rows))}<div class="status">${t.status==="stale"?"⚠ 舊資料，":""}更新於 ${fmtStamp(t.updated)}</div></div>`}
+ for(const[t,rows]of has){const ln=tLink(t,date);h+=`<div class="block"><div class="bhead"><span class="dot ok"></span><h3>${esc(t.name)}</h3>${ln?`<a class="link" href="${esc(ln)}" target="_blank" rel="noopener">官網訂票 ›</a>`:""}</div>${verBlock(date,groupByVer(rows))}<div class="status">${t.status==="stale"?"⚠ 舊資料，":""}${esc(t.source||"")} · 更新於 ${fmtStamp(t.updated)}</div></div>`}
  if(nodata.length)h+=`<div class="block"><div class="warnbox">⚠ ${nodata.map(t=>esc(t.name)).join("、")}：這天的場次還沒抓到，不代表沒有場次。</div></div>`;
  if(none.length||off.length)h+=`<div class="muted-row">${none.map(t=>`<span class="tag">${esc(t.name)}・這天沒有</span>`).join("")}${off.map(t=>`<span class="tag">${esc(t.name)}・${ST_LABEL[t.status]||"尚未接上"}</span>`).join("")}</div>`;
  $("#main").innerHTML=h+"</div>";
@@ -227,7 +227,7 @@ function renderTheater(){
   const byM=new Map();for(const r of rowsFor(t.id,date)){if(!byM.has(r[0]))byM.set(r[0],[]);byM.get(r[0]).push(r)}
   const ord=[...byM].sort((a,b)=>{const f=rs=>Math.min(...rs.map(r=>+r[4].replace(":","")));return f(a[1])-f(b[1])});
   const ln=tLink(t,date);
-  h=`<div class="list"><div class="status">${byM.size} 部電影 · ${t.status==="stale"?"⚠ 舊資料，":""}更新於 ${fmtStamp(t.updated)}${ln?` · <a style="color:var(--accent);font-weight:700;text-decoration:none" href="${esc(ln)}" target="_blank" rel="noopener">官網 ›</a>`:""}</div>${ord.map(([k,rows])=>{const m=mv(k);return`<div class="block"><div class="mrow"><button data-movie="${esc(k)}" aria-label="${esc(m.title)}">${poster(k)}</button><div class="min"><h3>${esc(m.title)}<small>${[m.rating?RATE[m.rating]:"",dur(m.runtime)].filter(Boolean).join(" · ")}</small></h3>${verBlock(date,groupByVer(rows))}</div></div></div>`}).join("")}</div>`;
+  h=`<div class="list"><div class="status">${byM.size} 部電影 · 來源：${esc(t.source||"")} · ${t.status==="stale"?"⚠ 舊資料，":""}更新於 ${fmtStamp(t.updated)}${ln?` · <a style="color:var(--accent);font-weight:700;text-decoration:none" href="${esc(ln)}" target="_blank" rel="noopener">官網 ›</a>`:""}</div>${ord.map(([k,rows])=>{const m=mv(k);return`<div class="block"><div class="mrow"><button data-movie="${esc(k)}" aria-label="${esc(m.title)}">${poster(k)}</button><div class="min"><h3>${esc(m.title)}<small>${[m.rating?RATE[m.rating]:"",dur(m.runtime)].filter(Boolean).join(" · ")}</small></h3>${verBlock(date,groupByVer(rows))}</div></div></div>`}).join("")}</div>`;
  }
  $("#main").innerHTML=h;
 }
