@@ -63,6 +63,10 @@ h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;m
 .tchip::after{content:"";position:absolute;right:13px;top:6px;bottom:6px;border-right:2px dashed rgba(28,26,23,.35)}
 .tchip .dot{box-shadow:0 0 0 2px rgba(255,255,255,.6)}
 .theaters{padding-block:2px}
+/* 還能往右／往左滑時，邊緣淡出提示 */
+.theaters.fade-r{-webkit-mask-image:linear-gradient(to right,#000 82%,transparent);mask-image:linear-gradient(to right,#000 82%,transparent)}
+.theaters.fade-l{-webkit-mask-image:linear-gradient(to right,transparent,#000 18%);mask-image:linear-gradient(to right,transparent,#000 18%)}
+.theaters.fade-l.fade-r{-webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent)}
 .tchip.tname{font-size:17px;font-weight:900;padding:9px 32px 9px 18px}
 .tarea{color:var(--muted);font-size:13px}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--off);flex:none}
@@ -356,6 +360,7 @@ function renderHome(){
  }
  $("#main").innerHTML=body;
  drawBanner();
+ updateFade();
 }
 
 function scoreTags(m){const s=m.scores||{};const out=[];
@@ -399,6 +404,9 @@ function renderTheater(){
  $("#main").innerHTML=h;
 }
 
+function updateFade(){const e=document.querySelector(".theaters");if(!e)return;const max=e.scrollWidth-e.clientWidth;e.classList.toggle("fade-r",e.scrollLeft<max-4);e.classList.toggle("fade-l",e.scrollLeft>4)}
+document.addEventListener("scroll",e=>{if(e.target.classList&&e.target.classList.contains("theaters"))updateFade()},{capture:true,passive:true});
+addEventListener("resize",updateFade);
 function render(){if(!D)return;({home:renderHome,movie:renderMovie,theater:renderTheater})[st.view]()}
 document.addEventListener("click",e=>{
  const b=e.target.closest("button");if(!b)return;
