@@ -34,9 +34,8 @@ button:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-off
 .wrap{max-width:760px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
 header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 10px;display:flex;flex-direction:column;gap:12px;border-bottom:1px solid var(--line)}
 .bar{display:flex;align-items:center;gap:10px;min-height:36px}
-.banner{border-radius:12px;overflow:hidden;max-height:200px;box-shadow:0 1px 0 var(--line),0 6px 18px rgba(60,40,20,.10);transition:max-height .25s ease,opacity .2s ease,margin .25s ease}
+.banner{border-radius:12px;overflow:hidden;box-shadow:0 1px 0 var(--line),0 6px 18px rgba(60,40,20,.10)}
 .banner svg{display:block;width:100%;height:auto}
-@media (prefers-reduced-motion:reduce){.banner{transition:none}}
 .brand{font-family:var(--f-display);font-weight:900;font-size:20px;letter-spacing:.02em;display:flex;align-items:baseline;gap:8px}
 .brand small{font-weight:500;font-size:12px;color:var(--muted);letter-spacing:.04em}
 .back{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:13px}
