@@ -48,10 +48,10 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 2px 0 rgba(0,0,0,.15)}
 /* 日期列：跟首頁分類分頁同一套顏色（淺底盒、選中番茄紅白字）；中文用粗黑體，日期維持塗鴉字 */
 .dates{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--chip);border-radius:10px;padding:3px}
-.dates button{border-radius:8px;padding:6px 4px;display:flex;flex-direction:column;align-items:center;line-height:1.2;color:var(--muted)}
-.dates button b{font-family:var(--f-body);font-weight:700;font-size:15px}
-.dates button span{font-family:"Rubik Dirt","Iansui",var(--f-body);font-size:15px;letter-spacing:.02em}
-.dates button span i{font-style:normal;font-family:var(--f-body);font-weight:700;font-size:12px;margin-left:4px}
+.dates button{border-radius:8px;padding:8px 2px;display:flex;flex-direction:row;justify-content:center;align-items:baseline;gap:5px;line-height:1.2;color:var(--muted);white-space:nowrap;min-width:0}
+.dates button b{font-family:var(--f-body);font-weight:700;font-size:clamp(12px,3.6vw,15px)}
+.dates button span{font-family:"Rubik Dirt","Iansui",var(--f-body);font-size:clamp(12px,3.6vw,15px);letter-spacing:.02em}
+.dates button span i{font-style:normal;font-family:var(--f-body);font-weight:700;font-size:clamp(11px,3.2vw,13px);margin-left:4px}
 .dates button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 2px 0 rgba(0,0,0,.15)}
 h2.sec{font-size:13px;letter-spacing:.12em;color:var(--accent);font-weight:900;margin:22px 0 10px}
 .theaters{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
