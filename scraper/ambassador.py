@@ -78,8 +78,13 @@ def parse(html):
 def scrape(tid, dates):
     """回傳 {movies, shows: {date: [...]}}。"""
     all_movies, by_date = {}, {}
+    first = get(showtime_url(tid, dates[0])).text
+    # 官網日期選單只列有排片的日期；不在選單裡的日子不抓，免得官網回別天的場次
+    offered = {f"{y}-{m}-{d}" for y, m, d in re.findall(r"DT=(\d{4})(?:%2F|/)(\d{2})(?:%2F|/)(\d{2})", first)}
     for d in dates:
-        html = get(showtime_url(tid, d)).text
+        if d != dates[0] and offered and d not in offered:
+            continue
+        html = first if d == dates[0] else get(showtime_url(tid, d)).text
         mv, sh = parse(html)
         all_movies.update(mv)
         by_date[d] = sh

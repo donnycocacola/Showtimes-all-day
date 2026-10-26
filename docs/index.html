@@ -46,6 +46,9 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background
 .seg button{min-width:0;white-space:nowrap;padding:7px 4px;border-radius:8px;font-weight:700;font-size:14px;color:var(--muted)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);box-shadow:0 2px 0 rgba(0,0,0,.15)}
 /* 日期列：跟首頁分類分頁同一套顏色（淺底盒、選中番茄紅白字）；中文用粗黑體，日期維持塗鴉字 */
+.datewrap{display:flex;align-items:stretch;gap:4px}
+.datewrap .dates{flex:1;min-width:0}
+.darrow{flex:none;width:30px;border-radius:10px;background:var(--accent);color:var(--accent-ink);font-size:13px;display:flex;align-items:center;justify-content:center}
 .dates{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--chip);border-radius:10px;padding:3px}
 .dates button{border-radius:8px;padding:8px 2px;display:flex;flex-direction:row;justify-content:center;align-items:baseline;gap:5px;line-height:1.2;color:var(--muted);white-space:nowrap;min-width:0}
 .dates button b{font-family:var(--f-body);font-weight:700;font-size:clamp(12px,3.6vw,15px)}
@@ -306,7 +309,7 @@ const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&g
 let D=null, M={}, S={}, THEATERS=[], DATES=[];
 const ST_LABEL={todo:"尚未接上",error:"抓取失敗",stale:"舊資料"};
 
-const dLabel=(d,i)=>{const t=new Date(d+"T00:00:00+08:00");return{rel:["今天","明天","後天"][i]||"",md:`${t.getMonth()+1}/${t.getDate()} 週${WD[t.getDay()]}`}};
+const dLabel=d=>{const t=new Date(d+"T00:00:00+08:00");const diff=Math.round((t-new Date(nowTPE().date+"T00:00:00+08:00"))/864e5);return{rel:["今天","明天","後天"][diff]||"",md:`${t.getMonth()+1}/${t.getDate()}`,wd:`週${WD[t.getDay()]}`}};
 const hue=k=>{let h=0;for(const c of k)h=(h*31+c.charCodeAt(0))%360;return h};
 const posterBg=k=>{const h=hue(k);return `background:linear-gradient(160deg,hsl(${h} 45% 42%),hsl(${(h+40)%360} 55% 22%))`};
 const dur=m=>m?`${Math.floor(m/60)}時${m%60}分`:"";
@@ -324,11 +327,13 @@ function groupByVer(rows){const g=new Map();for(const r of rows){const v=verName
 // 片單裡的片可能不在場次裡，給一個最小的電影資料
 function mv(key,fallbackTitle){return M[key]||{title:fallbackTitle||key}}
 
-let st={view:"home",tab:"now",date:0,movie:null,theater:null};
+let st={view:"home",tab:"now",date:0,win:0,movie:null,theater:null};
 try{const s=JSON.parse(localStorage.getItem("stx")||"{}");if(s.tab)st.tab=s.tab}catch(e){}
 function go(p){st={...st,...p};try{localStorage.setItem("stx",JSON.stringify({tab:st.tab}))}catch(e){}render();window.scrollTo(0,0)}
 
-function dateBar(){return`<div class="dates" role="group" aria-label="日期">${DATES.map((d,i)=>{const l=dLabel(d,i);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel}</b><span>${l.md.split(" ")[0]}<i>${l.md.split(" ")[1]||""}</i></span></button>`}).join("")}</div>`}
+function dateBar(){const w=st.win||0,shown=DATES.slice(w,w+3),more=w+3<DATES.length;
+ const arrows=DATES.length>3;
+ return!arrows?`<div class="dates" role="group" aria-label="日期">${shown.map((d,k)=>{const i=w+k,l=dLabel(d);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel||l.wd}</b><span>${l.md}${l.rel?`<i>${l.wd}</i>`:""}</span></button>`}).join("")}</div>`:`<div class="datewrap"><button class="darrow" data-win="${w-3}" aria-label="前三天" ${w>0?"":`style="visibility:hidden"`}>◀</button><div class="dates" role="group" aria-label="日期">${shown.map((d,k)=>{const i=w+k,l=dLabel(d);return`<button data-date="${i}" aria-pressed="${st.date===i}"><b>${l.rel||l.wd}</b><span>${l.md}</span></button>`}).join("")}</div><button class="darrow" data-win="${w+3}" aria-label="後三天" ${more?"":`style="visibility:hidden"`}>▶</button></div>`}
 function poster(key,rank,title){const m=mv(key,title);const img=m.poster?`<img src="${esc(m.poster)}" alt="" loading="lazy" onerror="this.parentNode.classList.remove('has-img');this.remove()">`:"";
  return`<div class="pimg${img?" has-img":""}" style="${posterBg(key)}">${img}${m.rating?`<span class="rate">${RATE[m.rating]}</span>`:""}${rank?`<span class="rank">${rank}</span>`:""}${scoreBadges(m)}<span>${esc(m.title)}</span><span class="en">${esc(m.en||"")}</span></div>`}
 function scoreBadges(m){const s=m.scores||{};const b=[];if(s.imdb)b.push(`<i><b>IMDb</b> ${esc(s.imdb)}</i>`);if(s.rt)b.push(`<i class="rt"><b>🍅</b> ${esc(s.rt)}</i>`);return b.length?`<span class="pscore">${b.join("")}</span>`:""}
@@ -410,6 +415,7 @@ function render(){if(!D)return;({home:renderHome,movie:renderMovie,theater:rende
 document.addEventListener("click",e=>{
  const b=e.target.closest("button");if(!b)return;
  if(b.dataset.tab)go({tab:b.dataset.tab});
+ else if(b.dataset.win!==undefined){const w=Math.max(0,Math.min(+b.dataset.win,DATES.length-1));go({win:w,date:w})}
  else if(b.dataset.date)go({date:+b.dataset.date});
  else if(b.dataset.movie)go({view:"movie",movie:b.dataset.movie,movieTitle:b.dataset.title});
  else if(b.dataset.theater)go({view:"theater",theater:b.dataset.theater});
@@ -420,7 +426,7 @@ document.addEventListener("click",e=>{
 fetch("data/showtimes.json?t="+Date.now()).then(r=>r.json()).then(d=>{
  D=d;M=d.movies||{};S=d.shows||{};THEATERS=d.theaters||[];DATES=d.dates||[];buildCounts();
  // 資料是前一天抓的話，日期列從今天開始
- const today=nowTPE().date;const i=DATES.indexOf(today);if(i>0){DATES=DATES.slice(i)}
+ const today=nowTPE().date;const i=DATES.indexOf(today);if(i>0){DATES=DATES.slice(i)};DATES=DATES.filter((d,i)=>i===0||Object.values(S).some(t=>t[d]&&t[d].length))
  const bad=THEATERS.filter(t=>t.status==="error"||t.status==="stale").map(t=>t.name);
  $("#foot").innerHTML=`資料更新於 ${fmtStamp(d.generated)}，每 2 小時自動更新。${bad.length?`<span class="errbar">⚠ ${esc(bad.join("、"))} 這次沒抓到。</span>`:""}`;
  render();

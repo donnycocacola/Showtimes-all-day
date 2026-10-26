@@ -35,6 +35,7 @@ THEATERS = [
     {"id": "xd", "name": "新店威秀", "area": "裕隆城", "src": "atmovies"},
     {"id": "dj", "name": "巨蛋秀泰", "area": "大巨蛋", "src": "atmovies"},
     {"id": "zs", "name": "真善美", "area": "西門町", "src": "atmovies"},
+    {"id": "gh", "name": "光點華山", "area": "華山1914", "src": "atmovies"},
 ]
 SRC_NAME = {"ambassador": "國賓官網", "atmovies": "開眼電影網"}
 DETAIL_VERSION = 3
@@ -52,7 +53,7 @@ def main():
     t_start = time.time()
     prev = load(OUT, {})
     details = load(DETAILS, {})
-    dates = next_days(3)
+    dates = next_days(7)  # 往後抓一週；網頁只顯示真的有場次的日子
     stamp = now_tpe().strftime("%Y-%m-%dT%H:%M")
     movies, shows, theaters, errors = {}, {}, [], []
 
