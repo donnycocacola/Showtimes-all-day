@@ -388,7 +388,7 @@ function renderMovie(){
  h+=`<div class="list">`;
  if(!has.length)h+=`<div class="block"><div class="empty">這天在已接上的戲院都沒有場次。</div></div>`;
  for(const[t,rows]of has){const ln=tLink(t,date);h+=`<div class="block"><div class="bhead"><span class="dot ok"></span><h3>${esc(t.name)}</h3>${ln?`<a class="link" href="${esc(ln)}" target="_blank" rel="noopener">官網訂票 ›</a>`:""}</div>${verBlock(date,groupByVer(rows))}<div class="status">${t.status==="stale"?"⚠ 舊資料，":""}${esc(t.source||"")} · 更新於 ${fmtStamp(t.updated)}</div></div>`}
- if(nodata.length)h+=`<div class="block"><div class="warnbox">⚠ ${nodata.map(t=>esc(t.name)).join("、")}：這天的場次還沒抓到，不代表沒有場次。</div></div>`;
+ if(nodata.length)h+=`<div class="block"><div class="warnbox">⚠ ${nodata.map(t=>esc(t.name)).join("、")}：這天的場次還沒公布或還沒抓到，不代表沒有場次。</div></div>`;
  if(none.length||off.length)h+=`<div class="muted-row">${none.map(t=>`<span class="tag">${esc(t.name)}・這天沒有</span>`).join("")}${off.map(t=>`<span class="tag">${esc(t.name)}・${ST_LABEL[t.status]||"尚未接上"}</span>`).join("")}</div>`;
  $("#main").innerHTML=h+"</div>";
 }
@@ -398,7 +398,7 @@ function renderTheater(){
  $("#top").innerHTML=`<div class="bar"><button class="back" data-home>◀ 首頁</button><span class="tchip tname">${esc(t.name)}</span><small class="tarea">${esc(t.area)}</small></div>${dateBar()}`;
  let h="";
  if(s==="off")h=`<div class="list"><div class="block"><div class="warnbox">⚠ ${t.status==="todo"?"這家的爬蟲還在做，做好就會出現。":"這次抓取失敗，稍後會自動重抓。"}</div></div></div>`;
- else if(s==="nodata")h=`<div class="list"><div class="block"><div class="warnbox">⚠ 這天的場次還沒抓到，不代表沒有場次。</div></div></div>`;
+ else if(s==="nodata")h=`<div class="list"><div class="block"><div class="warnbox">⚠ 這天的場次還沒公布或還沒抓到，不代表沒有場次。</div></div></div>`;
  else{
   const byM=new Map();for(const r of rowsFor(t.id,date)){if(!byM.has(r[0]))byM.set(r[0],[]);byM.get(r[0]).push(r)}
   const ord=[...byM].sort((a,b)=>{const f=rs=>Math.min(...rs.map(r=>+r[4].replace(":","")));return f(a[1])-f(b[1])});

@@ -100,6 +100,9 @@ def scrape(tid, dates):
         if page_date and page_date != d:
             # 開眼還沒排到這天（會自動跳回別天），當作沒資料，不要把別天的場次放錯日子
             continue
+        if not sh:
+            # 開眼還沒排出這天的場次，當作「還沒公布」，不要說成「這天沒有」
+            continue
         all_movies.update(mv)
         by_date[d] = sh
     if not any(by_date.values()):
