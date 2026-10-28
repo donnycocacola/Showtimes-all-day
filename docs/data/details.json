@@ -1869,5 +1869,36 @@
 "rt": "83%"
 },
 "scores_checked": "2026-10-28"
+},
+"幸福路上": {
+"tries": 1,
+"v": 3,
+"cast": "陳博正(阿西),桂綸鎂,魏德聖",
+"genre": "卡通動畫",
+"release": "2026-10-30",
+"scores": {},
+"scores_checked": "2026-10-28"
+},
+"太空百合戰鬥姬": {
+"tries": 1,
+"v": 3,
+"genre": "卡通動畫",
+"release": "2026-10-24",
+"scores": {
+"imdb_id": "tt29781139",
+"year": "2025",
+"imdb": "4.1",
+"imdb_votes": "11,314",
+"rt": "96%"
+},
+"scores_checked": "2026-10-28"
+},
+"應援特別場雙雄起義": {
+"tries": 1,
+"v": 3,
+"genre": "冒險",
+"release": "2026-11-01",
+"scores": {},
+"scores_checked": "2026-10-28"
 }
 }
