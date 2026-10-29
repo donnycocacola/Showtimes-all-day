@@ -1804,7 +1804,7 @@
 "genre": "劇情",
 "release": "2026-10-31",
 "scores": {},
-"scores_checked": "2026-10-26"
+"scores_checked": "2026-10-30"
 },
 "颱風俱樂部": {
 "tries": 1,
@@ -1903,7 +1903,9 @@
 },
 "水花四濺": {
 "tries": 3,
-"v": 3
+"v": 3,
+"scores": {},
+"scores_checked": "2026-10-30"
 },
 "極限返航": {
 "tries": 1,
